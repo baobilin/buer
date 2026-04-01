@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lin Jiamin | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f4f2; /* Soft Green */
+            --text-color: #1a3a5f; /* Deep Blue */
+            --accent-color: #2a5a8a;
+            --transition-speed: 0.8s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: multiply;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.5;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .trigger-zone {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            z-index: 50;
+            /* border: 1px dashed rgba(0,0,0,0.1); /* Uncomment to see the trigger area */
+        }
+
+        .center-content {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .center-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .center-content p {
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .keyword {
+            position: absolute;
+            font-weight: 300;
+            font-size: 1.5rem;
+            white-space: nowrap;
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0.6;
+        }
+
+        /* Hero State: Active (When mouse is in center) */
+        .hero.active .center-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero.active .keyword {
+            opacity: 0.3;
+            font-size: 1.1rem;
+        }
+
+        /* --- Content Sections --- */
+        section {
+            padding: 10rem 10%;
+            min-height: 80vh;
+            border-top: 1px solid rgba(26, 58, 95, 0.1);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .placeholder-box {
+            width: 100%;
+            height: 400px;
+            background: rgba(26, 58, 95, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-style: italic;
+            color: rgba(26, 58, 95, 0.4);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        footer {
+            padding: 5rem 10%;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .center-content h1 { font-size: 3rem; }
+            .grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; } /* Simplified for mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">LJ.</div>
+        <div class="nav-links">
+            <a href="#about">About Me</a>
+            <a href="#work">Work & Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <div class="hero" id="hero">
+        <div class="trigger-zone" id="trigger"></div>
+        
+        <div class="center-content">
+            <h1>林嘉敏 <br> <span style="font-size: 3rem; font-weight: 300;">Lin Jiamin</span></h1>
+            <p>Content Creator & Business Operator</p>
+        </div>
+
+        <div id="keywords-container"></div>
+    </div>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <div class="grid">
+            <div>
+                <p>Based in the intersection of visual storytelling and strategic operations, I bridge the gap between creative vision and business growth.</p>
+            </div>
+            <div class="placeholder-box">Portrait or Bio Image</div>
+        </div>
+    </section>
+
+    <section id="work">
+        <h2>Work & Skills</h2>
+        <div class="grid">
+            <div class="placeholder-box">Skill Matrix</div>
+            <div class="placeholder-box">Experience Timeline</div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>Selected Projects</h2>
+        <div class="grid">
+            <div class="placeholder-box">Project 01</div>
+            <div class="placeholder-box">Project 02</div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Let's Connect</h2>
+        <p>Email: 979855416@qq.com</p>
+    </section>
+
+    <footer>
+        &copy; 2026 Lin Jiamin. All rights reserved.
+    </footer>
+
+    <script>
+        const hero = document.getElementById('hero');
+        const trigger = document.getElementById('trigger');
+        const container = document.getElementById('keywords-container');
+
+        const leftGroup = ["Content Creation", "Documentary", "Interview", "Photography", "Storytelling"];
+        const rightGroup = ["Business Operation", "Key Account Management", "Brand Collaboration", "Event Planning", "Data Analysis"];
+        
+        const allKeywords = [...leftGroup, ...rightGroup];
+        const elements = [];
+
+        // Initialize keywords with random positions
+        allKeywords.forEach((text, i) => {
+            const el = document.createElement('div');
+            el.className = 'keyword';
+            el.innerText = text;
+            
+            // Random start positions
+            const randomX = Math.random() * 80 + 10; 
+            const randomY = Math.random() * 80 + 10;
+            
+            el.style.left = `${randomX}%`;
+            el.style.top = `${randomY}%`;
+            
+            container.appendChild(el);
+            elements.push({
+                el: el,
+                text: text,
+                initialLeft: `${randomX}%`,
+                initialTop: `${randomY}%`
+            });
+        });
+
+        // Mouse Enter Center
+        trigger.addEventListener('mouseenter', () => {
+            hero.classList.add('active');
+            
+            elements.forEach(item => {
+                const isLeft = leftGroup.includes(item.text);
+                const index = isLeft ? leftGroup.indexOf(item.text) : rightGroup.indexOf(item.text);
+                
+                // Align into editorial columns
+                if (isLeft) {
+                    item.el.style.left = '15%';
+                    item.el.style.top = `${25 + (index * 12)}%`;
+                } else {
+                    item.el.style.left = '75%';
+                    item.el.style.top = `${25 + (index * 12)}%`;
+                }
+            });
+        });
+
+        // Mouse Leave Center
+        trigger.addEventListener('mouseleave', () => {
+            hero.classList.remove('active');
+            
+            elements.forEach(item => {
+                item.el.style.left = item.initialLeft;
+                item.el.style.top = item.initialTop;
+            });
+        });
+
+        // Simple parallax for the keywords based on mouse movement
+        hero.addEventListener('mousemove', (e) => {
+            if (!hero.classList.contains('active')) {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                
+                elements.forEach((item, i) => {
+                    const factor = (i % 3 + 1) * 0.5;
+                    item.el.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+                });
+            } else {
+                elements.forEach(item => item.el.style.transform = `translate(0,0)`);
+            }
+        });
+    </script>
+</body>
+</html>
