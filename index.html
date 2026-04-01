@@ -3,2119 +3,827 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>林嘉敏 | 个人作品集</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <title>林嘉敏的个人主页 - Microsoft Internet Explorer</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="https://unpkg.com/ogl@0.0.77/dist/ogl.umd.js"></script>
     <style>
-        /* Modal Styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            box-sizing: border-box;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
-            pointer-events: none;
-        }
-
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
-
-        .modal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0);
-            backdrop-filter: blur(0px);
-            transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.4s;
-        }
-
-        .modal.active .modal-overlay {
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-content {
-            position: relative;
-            background-color: #f0f4f2;
-            border-radius: 12px;
-            max-width: 800px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 40px;
-            z-index: 2001;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(26, 58, 95, 0.1);
-            transform: scale(0.95);
-            opacity: 0;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
-            transition-delay: 0.1s;
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: none;
-            border: none;
-            font-size: 2.5rem;
-            color: #1a3a5f;
-            cursor: pointer;
-            z-index: 2002;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background-color 0.2s;
-        }
-
-        .modal-close:hover {
-            background-color: rgba(26, 58, 95, 0.1);
-        }
-
-        .modal-body {
-            padding: 2rem;
-            max-height: 75vh;
-            overflow-y: auto;
-        }
-
-        /* Custom scrollbar for modal body */
-        .modal-body::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .modal-body::-webkit-scrollbar-track {
-            background: rgba(26, 58, 95, 0.05);
-            border-radius: 4px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb {
-            background: rgba(26, 58, 95, 0.2);
-            border-radius: 4px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb:hover {
-            background: rgba(26, 58, 95, 0.3);
-        }
-
-        .modal-project-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #1a3a5f;
-        }
-
-        .modal-project-image {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            background: rgba(26, 58, 95, 0.03);
-        }
-
-        .modal-project-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .modal-project-description {
-            line-height: 1.8;
-            color: #333;
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .modal {
-                padding: 1rem;
-            }
-
-            .modal-content {
-                max-width: 95%;
-                max-height: 95vh;
-            }
-
-            .modal-body {
-                padding: 1.5rem;
-            }
-
-            .modal-project-title {
-                font-size: 2rem;
-            }
-        }
-
-        /* Tesla Project Detail Styles */
-        .modal-content .tesla-detail {
-            font-family: 'Inter', sans-serif;
-            color: #1a1a1a;
-            line-height: 1.7;
-        }
-
-        .modal-content .tesla-detail .tesla-hero {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .modal-content .tesla-detail .tesla-hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            color: #1a3a5f;
-            margin-bottom: 1rem;
-        }
-
-        .modal-content .tesla-detail .tesla-badge {
-            display: inline-block;
-            background: rgba(0, 136, 204, 0.1);
-            color: #0088cc;
-            padding: 0.5rem 1.2rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-        }
-
-        .modal-content .tesla-detail .tesla-intro {
-            max-width: 800px;
-            margin: 0 auto 3rem;
-            font-size: 1.1rem;
-            color: #666;
-            border-left: 3px solid #0088cc;
-            padding-left: 1.2rem;
-            text-align: left;
-        }
-
-        .modal-content .tesla-detail section {
-            margin-bottom: 3rem;
-        }
-
-        .modal-content .tesla-detail .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: #1a3a5f;
-            margin-bottom: 2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(26, 58, 95, 0.1);
-        }
-
-        .modal-content .tesla-detail .section-subtitle {
-            font-size: 1.4rem;
-            color: #0088cc;
-            margin: 2rem 0 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .modal-content .tesla-detail .section-subtitle::before {
-            content: "•";
-            color: #0088cc;
-            font-size: 1.5rem;
-        }
-
-        .modal-content .tesla-detail .action-list {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .modal-content .tesla-detail .action-item {
-            background: rgba(0, 136, 204, 0.05);
-            padding: 1.2rem;
-            border-radius: 8px;
-            margin-bottom: 1.2rem;
-            border-left: 4px solid #0088cc;
-        }
-
-        .modal-content .tesla-detail .action-title {
-            font-weight: 600;
-            color: #0088cc;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .modal-content .tesla-detail .methodology-box {
-            background: rgba(0, 136, 204, 0.08);
-            padding: 1.2rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            border: 1px solid rgba(0, 136, 204, 0.2);
-        }
-
-        .modal-content .tesla-detail .methodology-title {
-            font-weight: 600;
-            color: #0088cc;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-content .tesla-detail .tesla-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .modal-content .tesla-detail .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(0, 136, 204, 0.1);
-        }
-
-        .modal-content .tesla-detail .stat-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #0088cc;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-content .tesla-detail .stat-label {
-            font-size: 0.95rem;
-            color: #666;
-        }
-
-        .modal-content .tesla-detail .user-segment {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.2rem;
-            margin-top: 1rem;
-        }
-
-        .modal-content .tesla-detail .segment-card {
-            background: rgba(0, 136, 204, 0.05);
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 136, 204, 0.1);
-        }
-
-        .modal-content .tesla-detail .segment-title {
-            font-weight: 600;
-            color: #0088cc;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-content .tesla-detail .tesla-vision {
-            background: linear-gradient(135deg, rgba(0, 136, 204, 0.05) 0%, rgba(240, 247, 255, 0.8) 100%);
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 136, 204, 0.1);
-        }
-
-        .modal-content .tesla-detail .vision-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .modal-content .tesla-detail .vision-item {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .modal-content .tesla-detail .vision-title {
-            font-weight: 600;
-            color: #0088cc;
-            margin-bottom: 0.8rem;
-            font-size: 1.1rem;
-        }
-
-        .modal-content .tesla-detail .image-placeholder {
-            background: rgba(0, 136, 204, 0.05);
-            border: 2px dashed rgba(0, 136, 204, 0.3);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            color: #0088cc;
-            margin: 2rem 0;
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content .tesla-detail .placeholder-label {
-            font-size: 0.9rem;
-            margin-top: 0.8rem;
-            font-style: italic;
-            opacity: 0.8;
-        }
-
-        /* Tesla Detail Container Styles */
-        .modal-content .tesla-detail-container {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .modal-content .tesla-detail-container p,
-        .modal-content .tesla-detail-container li {
-            font-size: 17px;
-            line-height: 1.7;
-            color: #333;
-            margin-bottom: 1.2em;
-        }
-
-        .modal-content .tesla-detail-container h2 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .modal-content .tesla-detail-container h4 {
-            font-size: 19px;
-            font-weight: bold;
-        }
-
-        .modal-content .tesla-detail-container .detail-card {
-            margin-bottom: 24px;
-        }
-
-        .modal-content .tesla-detail-container .stat-grid {
-            margin-bottom: 30px;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .modal-content .tesla-detail .tesla-hero h1 {
-                font-size: 2rem;
-            }
-
-            .modal-content .tesla-detail .tesla-stats,
-            .modal-content .tesla-detail .user-segment,
-            .modal-content .tesla-detail .vision-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-content .tesla-detail .stat-value {
-                font-size: 2rem;
-            }
-        }
-
-        /* Circular Gallery Styles */
-        .circular-gallery-section {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(26, 58, 95, 0.1);
-        }
-
-        .circular-gallery-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .circular-gallery {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            perspective: 1200px;
-            transform-style: preserve-3d;
-            margin: 0 auto;
-        }
-
-        .gallery-item {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150px;
-            height: 200px;
-            margin-left: -75px;
-            margin-top: -100px;
-            transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-        }
-
-        .gallery-item:hover {
-            z-index: 10;
-        }
-
-        .gallery-item-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(26, 58, 95, 0.15);
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .gallery-item:hover .gallery-item-inner {
-            box-shadow: 0 15px 40px rgba(26, 58, 95, 0.25);
-            transform: scale(1.05);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .gallery-item-title {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(26, 58, 95, 0.85);
-            color: white;
-            padding: 0.5rem;
-            text-align: center;
-            font-size: 0.9rem;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-        }
-
-        .gallery-item:hover .gallery-item-title {
-            transform: translateY(0);
-        }
-
-        .gallery-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-
-        .gallery-btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
-        }
-
-        .gallery-btn:hover {
-            background: #1a3a5f;
-        }
-
-        .speed-control {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .speed-control label {
-            font-size: 0.9rem;
-            color: var(--text-color);
-        }
-
-        #speedSlider {
-            width: 120px;
-        }
-
-        .gallery-hint {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: rgba(26, 58, 95, 0.6);
-        }
-
-        /* Center indicator */
-        .gallery-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 5;
-            box-shadow: 0 0 0 8px rgba(42, 90, 138, 0.2);
-        }
-
-        .gallery-center::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 40px;
-            height: 40px;
-            border: 2px solid rgba(42, 90, 138, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .circular-gallery {
-                height: 400px;
-            }
-
-            .gallery-item {
-                width: 120px;
-                height: 160px;
-                margin-left: -60px;
-                margin-top: -80px;
-            }
-
-            .gallery-controls {
-                flex-direction: column;
-            }
+        /* Extra inline polish */
+        body { background: #008080; }
+        .win-window { outline: 1px solid #000; }
+        .about-step { position: static !important; opacity: 1 !important; transform: none !important; pointer-events: auto !important; display: none; }
+        .about-step.active { display: block; }
+        .word-animated { opacity: 1 !important; filter: none !important; transform: none !important; }
+        .highlight, strong.highlight {
+            background: #ffff99 !important;
+            color: #000 !important;
+            padding: 1px 3px !important;
+            border: 1px solid #c0a000 !important;
+            border-radius: 0 !important;
+            font-weight: bold !important;
+            display: inline !important;
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">LJ.</div>
-        <div class="nav-links">
-            <a href="#about">About Me</a>
-            <a href="#work">Work & Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-        </div>
-    </nav>
-
-    <div class="hero" id="hero">
-        <div class="trigger-zone" id="trigger"></div>
-        <div class="center-content">
-            <h1>林嘉敏 <br> <span style="font-size: 3rem; font-weight: 300;">Lin Jiamin</span></h1>
-            <p>Content Creator & Business Operator</p>
-        </div>
-        <div id="keywords-container"></div>
+<!-- ======================================================
+     TASKBAR
+     ====================================================== -->
+<div id="win-taskbar">
+    <button id="win-start-btn" onclick="toggleStartMenu()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="6" height="6" fill="#ff0000"/>
+            <rect x="9" y="1" width="6" height="6" fill="#00cc00"/>
+            <rect x="1" y="9" width="6" height="6" fill="#0000ff"/>
+            <rect x="9" y="9" width="6" height="6" fill="#ffcc00"/>
+        </svg>
+        <strong>开始</strong>
+    </button>
+    <div class="taskbar-sep"></div>
+    <div class="taskbar-tasks">
+        <a href="#" class="taskbar-task-btn" onclick="scrollToTop(event)">
+            <svg width="14" height="14" viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="12" fill="#d4d0c8" stroke="#000" stroke-width="1"/><rect x="1" y="2" width="14" height="4" fill="#0a246a"/></svg>
+            林嘉敏的个人主页
+        </a>
     </div>
+    <div class="taskbar-sep"></div>
+    <div id="win-clock">--:--</div>
+</div>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <div class="grid">
-            <!-- Left Column: Text Content -->
-            <div class="about-text-container">
-                <div class="about-step about-step-1 active">
-                    <p class="about-intro">
-                        你好，我是林嘉敏。
-                    </p>
+<!-- Start Menu (hidden by default) -->
+<div id="start-menu" style="
+    display:none;
+    position:fixed;
+    bottom:30px;
+    left:0;
+    width:180px;
+    background:#d4d0c8;
+    border-top:2px solid #fff;
+    border-left:2px solid #fff;
+    border-right:2px solid #000;
+    border-bottom:2px solid #000;
+    z-index:99999;
+    box-shadow:4px 4px 0 rgba(0,0,0,0.3);
+">
+    <div style="background:linear-gradient(to bottom,#0a246a,#1641c6);writing-mode:vertical-rl;transform:rotate(180deg);padding:8px 4px;color:#fff;font-weight:bold;font-size:13px;float:left;height:200px;display:flex;align-items:flex-end;">
+        Windows 2000
+    </div>
+    <div style="margin-left:28px;border-top:1px solid #808080;margin-top:4px;"></div>
+    <a href="#about" onclick="closeStart()" style="display:block;padding:6px 8px;font-size:11px;color:#000;text-decoration:none;margin-left:28px;" onmouseover="this.style.background='#0a246a';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#000'">👤 关于我</a>
+    <a href="#work" onclick="closeStart()" style="display:block;padding:6px 8px;font-size:11px;color:#000;text-decoration:none;margin-left:28px;" onmouseover="this.style.background='#0a246a';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#000'">💼 工作与技能</a>
+    <a href="#projects" onclick="closeStart()" style="display:block;padding:6px 8px;font-size:11px;color:#000;text-decoration:none;margin-left:28px;" onmouseover="this.style.background='#0a246a';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#000'">📁 项目作品</a>
+    <a href="#contact" onclick="closeStart()" style="display:block;padding:6px 8px;font-size:11px;color:#000;text-decoration:none;margin-left:28px;" onmouseover="this.style.background='#0a246a';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#000'">📧 联系方式</a>
+    <div style="border-top:1px solid #808080;margin:4px 0 4px 28px;"></div>
+    <a href="public/resume.pdf" download onclick="closeStart()" style="display:block;padding:6px 8px;font-size:11px;color:#000;text-decoration:none;margin-left:28px;" onmouseover="this.style.background='#0a246a';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#000'">📄 下载简历</a>
+    <div style="border-top:1px solid #808080;margin:4px 0 4px 28px;"></div>
+    <a href="#" onclick="closeStart();alert('感谢访问！祝您使用愉快。')" style="display:block;padding:6px 8px;font-size:11px;color:#000;text-decoration:none;margin-left:28px;" onmouseover="this.style.background='#0a246a';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='#000'">🔌 关机...</a>
+</div>
 
-                    <p class="about-highlight">
-                        当记者的第三年，我花三个月一战跨考上岸211新传研究生，目前是石河子大学新闻与传播专业研二学生。<strong>我相信生命是一棵长满可能的树，而人可以无限进步。</strong>
-                    </p>
-                </div>
+<!-- ======================================================
+     MAIN BROWSER WINDOW
+     ====================================================== -->
+<div class="container">
 
-                <div class="about-step about-step-2">
-                    <p class="about-intro">
-                        职业轨迹：跨界探索
-                    </p>
-                    <p class="about-highlight">
-                        <strong class="highlight">做内容？做运营？做产品？</strong><br><br>三年的新媒体记者生涯，我习惯了扛着相机拿着笔，穿梭在城市街头，用镜头和文字捕捉那些真实动人的瞬间。为了看得更远、更深，我选择攻读新闻传播研究生，在学术中沉淀思考。而在特斯拉的实习，则让我从感性的叙事中跳脱出来，尝试用理性的逻辑去拆解需求、驱动增长。<br><br>对我而言，无论是讲故事还是做商业落地，核心始终如一：去了解屏幕后那个真实的人。而<strong>好奇心与洞察力</strong>，是打开无数与此相关之门的钥匙。
-                    </p>
-                </div>
-
-                <div class="about-step about-step-3">
-                    <p class="about-intro">
-                        未来愿景与个人探索
-                    </p>
-
-                    <p>
-                        在未来的职业规划上，<strong>视频内容创作</strong>与<strong>产品运营</strong>是我非常向往的两个方向。我既希望能继续用镜头和创意打造优质的影像内容，也希望把做内容培养出的同理心，转化为驱动业务增长的运营策略。
-                    </p>
-
-                    <p>
-                        工作之外，我热衷于影像创作与前沿技术的探索。我曾策划非遗纪录片《一脉火龙》，利用AI制作了客家乡愁动画短片《月光光》；也在无数夜晚中，<strong>沉浸vibecoding不能自拔，一步步跑通ai工作流，利用ai进行数据分析，创作小工具，为工作提效</strong>。
-                    </p>
-
-                    <p>
-                        我相信，不管是死磕一支视频，还是打磨一个产品，核心都是用新颖的方式，<strong>为用户创造更优的体验</strong>。
-                    </p>
-                </div>
+    <!-- ---- BROWSER CHROME ---- -->
+    <div class="win-window" style="margin-top:8px;" id="main-window">
+        <!-- Title Bar -->
+        <div class="win-title-bar">
+            <div class="win-title-bar-left">
+                <span class="win-title-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#1a7fc4" stroke="#003399" stroke-width="1"/><circle cx="8" cy="8" r="4" fill="none" stroke="#fff" stroke-width="1"/><line x1="1" y1="8" x2="15" y2="8" stroke="#fff" stroke-width="1"/><line x1="8" y1="1" x2="8" y2="15" stroke="#fff" stroke-width="0.5"/></svg>
+                </span>
+                <span>林嘉敏的个人主页 - Microsoft Internet Explorer</span>
             </div>
-
-            <!-- Right Column: Image Content -->
-            <div class="about-image-container">
-                <!-- Empty image steps to maintain CSS structure -->
-                <div class="about-image-step about-image-step-1 active">
-                    <!-- Shared gallery will be used for all steps -->
-                </div>
-
-                <div class="about-image-step about-image-step-2">
-                    <!-- Shared gallery will be used for all steps -->
-                </div>
-
-                <div class="about-image-step about-image-step-3">
-                    <!-- Shared gallery will be used for all steps -->
-                </div>
-
-                <!-- Shared gallery for all three steps -->
-                <div class="gallery" id="shared-gallery">
-                    <div class="card"><img src="Assets/gallery/step-1-01.jpg" alt="学术研究"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-02.jpg" alt="校园生活"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-03.png" alt="学习环境"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-04.jpg" alt="团队协作"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-05.jpg" alt="学术讨论"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-06.jpg" alt="项目展示"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-07.jpg" alt="实验研究"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-08.jpg" alt="资料查阅"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-09.jpg" alt="校园风景"></div>
-                    <div class="card"><img src="Assets/gallery/step-1-10.jpg" alt="毕业典礼"></div>
-                </div>
+            <div class="win-title-buttons">
+                <button class="win-chrome-btn" title="最小化" onclick="document.getElementById('main-window').style.display='none'">_</button>
+                <button class="win-chrome-btn" title="最大化">□</button>
+                <button class="win-chrome-btn" title="关闭" onclick="document.getElementById('main-window').style.display='none'">✕</button>
             </div>
+        </div>
 
-            <!-- Button Area (Full width below the two columns) -->
-            <div class="about-button-area">
-                <div class="about-toggle-wrapper">
-                    <button class="about-toggle-btn" id="about-toggle">
-                        <span class="toggle-text">继续探索</span>
-                        <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M6 9l6 6 6-6"/>
+        <!-- Menu Bar -->
+        <div class="win-menu-bar">
+            <span class="win-menu-item"><u>F</u>ile 文件</span>
+            <span class="win-menu-item"><u>E</u>dit 编辑</span>
+            <span class="win-menu-item"><u>V</u>iew 查看</span>
+            <span class="win-menu-item"><u>F</u>avorites 收藏</span>
+            <span class="win-menu-item"><u>T</u>ools 工具</span>
+            <span class="win-menu-item"><u>H</u>elp 帮助</span>
+        </div>
+
+        <!-- Toolbar Row -->
+        <div style="display:flex;align-items:center;gap:2px;padding:2px 4px;border-bottom:1px solid #c0c0c0;background:#d4d0c8;">
+            <button class="win-btn" style="min-width:40px;padding:2px 6px;" onclick="history.back()">◀ 后退</button>
+            <button class="win-btn" style="min-width:40px;padding:2px 6px;" onclick="history.forward()">前进 ▶</button>
+            <button class="win-btn" style="min-width:40px;padding:2px 6px;" onclick="location.reload()">🔄 刷新</button>
+            <button class="win-btn" style="min-width:40px;padding:2px 6px;" onclick="window.scrollTo(0,0)">🏠 主页</button>
+            <div style="width:1px;height:20px;background:#808080;margin:0 2px;"></div>
+            <button class="win-btn" style="min-width:40px;padding:2px 6px;" onclick="window.print()">🖨️ 打印</button>
+        </div>
+
+        <!-- Address Bar -->
+        <div class="win-address-bar">
+            <span class="win-address-label">地址(D)</span>
+            <input class="win-address-input" type="text" value="http://www.linjiamin.com/portfolio/index.html" readonly>
+            <button class="win-btn" style="min-width:40px;padding:1px 8px;">转到</button>
+        </div>
+
+        <!-- Marquee ticker -->
+        <div class="win-marquee-bar">
+            <marquee>★ 欢迎访问林嘉敏的个人作品集！正在寻找产品运营 / 内容创作相关实习机会，欢迎联系！邮箱：979855416@qq.com ★ Welcome to Lin Jiamin's Portfolio! ★ Content Creator &amp; Business Operator ★</marquee>
+        </div>
+
+        <!-- ====================================================
+             PAGE CONTENT STARTS
+             ==================================================== -->
+
+        <!-- HERO / ABOUT SPLASH (desktop area) -->
+        <div class="win-desktop-area" id="hero" style="min-height:220px;align-items:center;justify-content:center;padding:24px 16px;">
+            <!-- Desktop Icons left side -->
+            <div style="position:absolute;left:12px;top:16px;display:flex;flex-direction:column;gap:12px;">
+                <div class="desktop-icon" onclick="window.scrollTo({top:document.getElementById('projects').offsetTop,behavior:'smooth'})">
+                    <div class="icon-img">
+                        <svg width="32" height="32" viewBox="0 0 32 32">
+                            <rect x="2" y="6" width="28" height="22" fill="#f0f0f0" stroke="#000" stroke-width="1"/>
+                            <rect x="2" y="6" width="28" height="4" fill="#0a246a"/>
+                            <rect x="5" y="14" width="22" height="3" fill="#c0c0c0"/>
+                            <rect x="5" y="19" width="16" height="3" fill="#c0c0c0"/>
+                            <rect x="5" y="24" width="20" height="3" fill="#c0c0c0"/>
                         </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="work">
-        <h2>Work & Skills</h2>
-        <div class="grid">
-            <div class="content-box">
-                <h3>职业经历</h3>
-                <ul>
-                    <li><strong>大客户运营实习4个月 @ 特斯拉 (Tesla)</strong><br><span style="font-size: 0.9rem; opacity: 0.8;">商业拓展 / 活动统筹 / 品牌合作</span></li>
-                    <li><strong>市级新媒体记者 (3年)</strong><br><span style="font-size: 0.9rem; opacity: 0.8;">新闻报道 / 深度访谈 / 视觉叙事</span></li>
-                    <li><strong>全日制硕士在读 @ 石河子大学</strong><br><span style="font-size: 0.9rem; opacity: 0.8;">新媒体与传播专业 (2027届)</span></li>
-                </ul>
-            </div>
-            <div class="content-box">
-                <h3>核心技能</h3>
-                <div style="margin-top: 1rem;">
-                    <span class="tag">AI 内容创作 (AIGC)</span>
-                    <span class="tag">纪录片策划</span>
-                    <span class="tag">短视频编导</span>
-                    <span class="tag">摄影与视觉设计</span>
-                    <span class="tag">大客户管理 (KA)</span>
-                    <span class="tag">线下展会统筹</span>
-                    <span class="tag">活动方案策划</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects">
-        <h2>Selected Projects</h2>
-        <div class="projects-grid">
-            <!-- 影像创作类作品 -->
-            <div class="project-card" data-id="project-1">
-                <div class="project-cover">
-                    <img src="Projects/project-1-documentary.JPG" alt="毕设纪录片《一脉火龙》封面" class="project-image">
-                </div>
-                <div class="project-content">
-                    <h3>毕设纪录片《一脉火龙》</h3>
-                    <p>非遗传承挖掘、剧本与拍摄策划。</p>
-                    <div class="project-tags">
-                        <!-- 此项目无获奖标签 -->
                     </div>
+                    <span>我的作品集</span>
+                </div>
+                <div class="desktop-icon" onclick="window.open('public/resume.pdf')">
+                    <div class="icon-img">
+                        <svg width="32" height="32" viewBox="0 0 32 32">
+                            <rect x="4" y="2" width="20" height="28" fill="#fff" stroke="#808080" stroke-width="1"/>
+                            <path d="M18 2 L24 8 L18 8 Z" fill="#c0c0c0" stroke="#808080" stroke-width="1"/>
+                            <rect x="7" y="12" width="14" height="2" fill="#0000cc"/>
+                            <rect x="7" y="16" width="12" height="2" fill="#808080"/>
+                            <rect x="7" y="20" width="14" height="2" fill="#808080"/>
+                        </svg>
+                    </div>
+                    <span>简历.pdf</span>
                 </div>
             </div>
 
-            <div class="project-card" data-id="project-2">
-                <div class="project-cover">
-                    <a href="https://jimeng.jianying.com/ai-tool/work-detail/7610810411935370546?workDetailType=ShowcaseVideo&itemType=210&isShared=1" target="_blank" rel="noopener noreferrer">
-                        <img src="Projects/project-2-ai-animation.jpg" alt="AI 动画短片《月光光》封面" class="project-image">
-                    </a>
-                    <div class="image-hint" style="font-size: 12px; color: #666; text-align: center; margin-top: 6px; font-style: italic;">
-                        （点击图片可跳转）
+            <!-- Desktop Icons right side -->
+            <div style="position:absolute;right:12px;top:16px;display:flex;flex-direction:column;gap:12px;">
+                <div class="desktop-icon" onclick="window.scrollTo({top:document.getElementById('contact').offsetTop,behavior:'smooth'})">
+                    <div class="icon-img">
+                        <svg width="32" height="32" viewBox="0 0 32 32">
+                            <rect x="2" y="8" width="28" height="18" fill="#ffd700" stroke="#000" stroke-width="1"/>
+                            <polyline points="2,8 16,20 30,8" fill="none" stroke="#000" stroke-width="1.5"/>
+                        </svg>
                     </div>
+                    <span>联系我</span>
                 </div>
-                <div class="project-content">
-                    <h3>AI 动画短片《月光光》</h3>
-                    <p>客家童年记忆与乡愁故事，探索前沿 AIGC 技术。</p>
-                    <div class="project-tags">
-                        <span class="project-tag">全国即梦 AI 大赛获优秀奖</span>
+                <div class="desktop-icon" onclick="alert('正在打开回收站...\n\n此文件夹为空。\n感谢您保持桌面整洁！')">
+                    <div class="icon-img">
+                        <svg width="32" height="32" viewBox="0 0 32 32">
+                            <rect x="10" y="4" width="12" height="3" fill="#aaa" stroke="#666" stroke-width="1"/>
+                            <rect x="4" y="7" width="24" height="2" fill="#aaa" stroke="#666" stroke-width="1"/>
+                            <path d="M7 9 L9 28 L23 28 L25 9 Z" fill="#d4d0c8" stroke="#666" stroke-width="1"/>
+                            <line x1="13" y1="12" x2="13" y2="25" stroke="#666" stroke-width="1"/>
+                            <line x1="16" y1="12" x2="16" y2="25" stroke="#666" stroke-width="1"/>
+                            <line x1="19" y1="12" x2="19" y2="25" stroke="#666" stroke-width="1"/>
+                        </svg>
                     </div>
+                    <span>回收站</span>
                 </div>
             </div>
 
-            <div class="project-card" data-id="project-3">
-                <div class="project-cover">
-                    <a href="https://www.xinpianchang.com/a13394272?channel=copyLink&from=webShare" target="_blank" rel="noopener noreferrer">
-                        <img src="Projects/project-3-dorm-scam.jpg" alt="剧情短片《宿舍受骗记》封面" class="project-image">
-                    </a>
-                    <div class="image-hint" style="font-size: 12px; color: #666; text-align: center; margin-top: 6px; font-style: italic;">
-                        （点击图片可跳转）
+            <!-- Hero "About Me" popup window in center -->
+            <div style="background:#d4d0c8;border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #000;border-bottom:2px solid #000;width:380px;max-width:70vw;outline:1px solid #000;box-shadow:4px 4px 0 rgba(0,0,0,0.4);">
+                <div style="background:linear-gradient(to right,#0a246a,#1641c6);color:#fff;padding:3px 4px;font-size:11px;font-weight:bold;display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:4px;">
+                        <svg width="14" height="14" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3" fill="#ffcc66"/><path d="M2 14 Q8 10 14 14" fill="#ffcc66"/></svg>
+                        林嘉敏 — 个人简介
+                    </div>
+                    <div style="display:flex;gap:2px;">
+                        <button class="win-chrome-btn">_</button>
+                        <button class="win-chrome-btn">□</button>
+                        <button class="win-chrome-btn">✕</button>
                     </div>
                 </div>
-                <div class="project-content">
-                    <h3>剧情短片《宿舍受骗记》</h3>
-                    <p>小成品微短剧，关注校园生活与社会议题。</p>
-                    <div class="project-tags">
-                        <span class="project-tag">中国好创意河马杯最佳导演奖</span>
+                <div style="padding:12px;font-size:11px;line-height:1.7;background:#d4d0c8;">
+                    <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;">
+                        <svg width="48" height="56" viewBox="0 0 48 56" style="flex-shrink:0;">
+                            <rect x="4" y="4" width="40" height="52" fill="#e8c49a" stroke="#808080" stroke-width="1"/>
+                            <circle cx="24" cy="20" r="10" fill="#c8965a"/>
+                            <path d="M4 52 Q24 34 44 52" fill="#0a246a"/>
+                            <rect x="4" y="4" width="40" height="4" fill="#c8965a"/>
+                        </svg>
+                        <div>
+                            <div style="font-size:16px;font-weight:bold;color:#0a246a;margin-bottom:2px;">林嘉敏 (Lin Jiamin)</div>
+                            <div style="font-size:11px;color:#333;border-bottom:1px solid #c0c0c0;padding-bottom:4px;margin-bottom:4px;">Content Creator &amp; Business Operator</div>
+                            <div style="font-size:10px;color:#555;">📍 石河子大学 新闻与传播 研二</div>
+                            <div style="font-size:10px;color:#555;">📧 <a href="mailto:979855416@qq.com" class="win-link">979855416@qq.com</a></div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- 商业运营类作品 -->
-            <div class="project-card" data-id="project-4">
-                <div class="project-cover">
-                    <img src="Projects/project-4-tesla-fleet.JPG" alt="市级媒体内容创作封面" class="project-image">
-                </div>
-                <div class="project-content">
-                    <h3>市级媒体内容创作</h3>
-                    <p>传统媒体中的创意内容产出及商业合作</p>
-                    <div class="project-tags">
-                        <!-- 此项目无获奖标签 -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card" data-id="project-5">
-                <div class="project-cover">
-                    <img src="Projects/project-5-tesla-operation.jpg.jpg" alt="特斯拉大客户深度运营体验封面" class="project-image">
-                </div>
-                <div class="project-content">
-                    <h3>特斯拉大客户深度运营体验</h3>
-                    <p>线下统筹与宣发物料制作，将品牌理念转化为切实的线下体验与客户连接。</p>
-                    <div class="project-tags">
-                        <!-- 此项目无获奖标签 -->
+                    <div style="border-top:1px solid #808080;border-bottom:1px solid #fff;margin:4px 0;"></div>
+                    <p style="font-size:11px;color:#333;margin:4px 0;"><strong>Status:</strong> ✅ 正在寻找产品运营 / 内容创作实习机会</p>
+                    <div style="display:flex;gap:4px;margin-top:8px;justify-content:flex-end;">
+                        <a href="#about" class="win-btn win-btn-default" style="min-width:60px;font-size:11px;">了解我</a>
+                        <a href="public/resume.pdf" download class="win-btn" style="min-width:60px;font-size:11px;">下载简历</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
+        <!-- ============================================
+             ABOUT ME SECTION
+             ============================================ -->
+        <div id="about" style="background:#d4d0c8;padding:8px;">
 
-    <section id="contact">
-        <div class="flex justify-between items-center mb-6">
-            <h2>Let's Connect</h2>
-            <button id="downloadResumeBtn" class="bg-[var(--accent-color)] text-white px-4 py-2 rounded-lg hover:scale-105 hover:bg-[#1a3a5f] transition-transform flex items-center gap-2">
-                <i data-lucide="download" class="w-5 h-5"></i>
-                下载简历
-            </button>
-        </div>
-        <p>找寻产品运营/内容创作相关实习中，随时欢迎交流</p>
-        <p style="margin-top: 1rem; font-weight: 500;">Email: <a href="mailto:979855416@qq.com" style="color: var(--accent-color); text-decoration: none;">979855416@qq.com</a></p>
-
-        <!-- Circular Gallery -->
-        <div class="circular-gallery-section" style="margin: 4rem 0;">
-            <h3 style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem; color: var(--text-color);">
-                证书画廊
-            </h3>
-
-            <div class="circular-gallery-container">
-                <div class="circular-gallery" id="circularGallery">
-                    <!-- Gallery items will be added by JavaScript -->
+            <div style="border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #808080;border-bottom:2px solid #808080;margin-bottom:8px;">
+                <div style="background:linear-gradient(to right,#0a246a,#1641c6);color:#fff;padding:3px 8px;font-size:11px;font-weight:bold;display:flex;align-items:center;gap:6px;">
+                    <svg width="14" height="14" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3" fill="#ffcc66"/><path d="M2 14 Q8 10 14 14" fill="#ffcc66"/></svg>
+                    关于我 (About Me)
                 </div>
 
-                <div class="gallery-controls">
-                    <button class="gallery-btn" id="autoRotateBtn">自动旋转</button>
-                    <button class="gallery-btn" id="resetBtn">重置位置</button>
-                    <div class="speed-control">
-                        <label for="speedSlider">旋转速度:</label>
-                        <input type="range" id="speedSlider" min="1" max="10" value="5">
+                <!-- Tab Bar -->
+                <div class="win-tab-bar" id="about-tabs">
+                    <div class="win-tab active" onclick="switchAboutTab(1)">📌 自我介绍</div>
+                    <div class="win-tab" onclick="switchAboutTab(2)">🗂️ 职业轨迹</div>
+                    <div class="win-tab" onclick="switchAboutTab(3)">🚀 未来愿景</div>
+                </div>
+
+                <!-- Tab Content 1 -->
+                <div class="win-tab-content active" id="about-tab-1">
+                    <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start;">
+                        <div>
+                            <p style="font-size:12px;font-weight:bold;color:#0a246a;margin-bottom:4px;">你好，我是林嘉敏。</p>
+                            <p style="font-size:11px;line-height:1.7;color:#333;">
+                                当记者的第三年，我花三个月一战跨考上岸211新传研究生，目前是石河子大学新闻与传播专业研二学生。
+                                <strong>我相信生命是一棵长满可能的树，而人可以无限进步。</strong>
+                            </p>
+                        </div>
+                        <!-- Little info box -->
+                        <div style="background:#fff;border:1px solid #808080;padding:6px;min-width:140px;font-size:10px;">
+                            <div style="background:#0a246a;color:#fff;padding:2px 4px;font-size:10px;margin:-6px -6px 4px;font-weight:bold;">📋 基本信息</div>
+                            <div style="padding:2px 0;border-bottom:1px solid #eee;">🎓 211硕士在读</div>
+                            <div style="padding:2px 0;border-bottom:1px solid #eee;">📰 3年新媒体记者</div>
+                            <div style="padding:2px 0;border-bottom:1px solid #eee;">🚗 Tesla实习经历</div>
+                            <div style="padding:2px 0;">🏆 多个竞赛奖项</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="gallery-hint">
+                <!-- Tab Content 2 -->
+                <div class="win-tab-content" id="about-tab-2">
+                    <p style="font-size:12px;font-weight:bold;color:#0a246a;margin-bottom:4px;">职业轨迹：跨界探索</p>
+                    <p style="font-size:11px;line-height:1.7;color:#333;">
+                        <strong class="highlight">做内容？做运营？做产品？</strong>
+                        三年的新媒体记者生涯，我习惯了扛着相机拿着笔，穿梭在城市街头，用镜头和文字捕捉那些真实动人的瞬间。
+                        为了看得更远、更深，我选择攻读新闻传播研究生，在学术中沉淀思考。
+                        而在特斯拉的实习，则让我从感性的叙事中跳脱出来，尝试用理性的逻辑去拆解需求、驱动增长。
+                    </p>
+                    <p style="font-size:11px;line-height:1.7;color:#333;margin-top:6px;">
+                        对我而言，无论是讲故事还是做商业落地，核心始终如一：去了解屏幕后那个真实的人。
+                        而<strong>好奇心与洞察力</strong>，是打开无数与此相关之门的钥匙。
+                    </p>
+                </div>
 
-    </section>
-
-    <!-- Project Modal -->
-    <div id="projectModal" class="modal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button class="modal-close">&times;</button>
-            <div class="modal-body">
-                <!-- Content will be loaded here -->
+                <!-- Tab Content 3 -->
+                <div class="win-tab-content" id="about-tab-3">
+                    <p style="font-size:12px;font-weight:bold;color:#0a246a;margin-bottom:4px;">未来愿景与个人探索</p>
+                    <p style="font-size:11px;line-height:1.7;color:#333;">
+                        在未来的职业规划上，<strong>视频内容创作</strong>与<strong>产品运营</strong>是我非常向往的两个方向。
+                        我既希望能继续用镜头和创意打造优质的影像内容，也希望把做内容培养出的同理心，转化为驱动业务增长的运营策略。
+                    </p>
+                    <p style="font-size:11px;line-height:1.7;color:#333;margin-top:6px;">
+                        工作之外，我热衷于影像创作与前沿技术的探索。曾策划非遗纪录片《一脉火龙》，利用AI制作了客家乡愁动画短片《月光光》；
+                        也在无数夜晚中，<strong>沉浸vibecoding不能自拔，一步步跑通ai工作流，利用ai进行数据分析，创作小工具，为工作提效</strong>。
+                    </p>
+                </div>
             </div>
+        </div>
+
+        <!-- ============================================
+             WORK & SKILLS
+             ============================================ -->
+        <div id="work" style="background:#d4d0c8;padding:8px;border-top:1px solid #808080;">
+
+            <div style="border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #808080;border-bottom:2px solid #808080;">
+                <div style="background:linear-gradient(to right,#0a246a,#1641c6);color:#fff;padding:3px 8px;font-size:11px;font-weight:bold;display:flex;align-items:center;gap:6px;">
+                    <svg width="14" height="14" viewBox="0 0 16 16"><rect x="2" y="5" width="12" height="9" fill="#d4d0c8" stroke="#000" stroke-width="1"/><rect x="5" y="3" width="6" height="3" fill="#d4d0c8" stroke="#000" stroke-width="1"/><rect x="2" y="9" width="12" height="1" fill="#0a246a"/></svg>
+                    工作经历与核心技能 (Work &amp; Skills)
+                </div>
+
+                <div style="padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;" class="skills-grid">
+                    <!-- Experience Column -->
+                    <div>
+                        <div style="font-size:11px;font-weight:bold;margin-bottom:3px;background:#c0c0c0;padding:2px 4px;border:1px solid #808080;">📋 职业经历</div>
+                        <div class="win-listbox">
+                            <div class="win-list-item" onclick="this.classList.toggle('selected')">
+                                <strong>🚗 大客户运营实习 @ Tesla（4个月）</strong><br>
+                                <span style="font-size:10px;color:#555;padding-left:12px;display:block;">商业拓展 / 活动统筹 / 品牌合作</span>
+                            </div>
+                            <div class="win-list-item" onclick="this.classList.toggle('selected')">
+                                <strong>📰 市级新媒体记者（3年）</strong><br>
+                                <span style="font-size:10px;color:#555;padding-left:12px;display:block;">新闻报道 / 深度访谈 / 视觉叙事</span>
+                            </div>
+                            <div class="win-list-item" onclick="this.classList.toggle('selected')">
+                                <strong>🎓 全日制硕士在读 @ 石河子大学</strong><br>
+                                <span style="font-size:10px;color:#555;padding-left:12px;display:block;">新媒体与传播专业（2027届）</span>
+                            </div>
+                        </div>
+                        <div style="margin-top:6px;font-size:10px;color:#555;">提示：单击条目可选中/取消选中</div>
+                    </div>
+
+                    <!-- Skills Column -->
+                    <div>
+                        <div style="font-size:11px;font-weight:bold;margin-bottom:3px;background:#c0c0c0;padding:2px 4px;border:1px solid #808080;">🔧 核心技能</div>
+                        <div style="background:#fff;border-top:1px solid #808080;border-left:1px solid #808080;border-right:1px solid #fff;border-bottom:1px solid #fff;padding:6px;min-height:120px;">
+                            <span class="win-chip">🤖 AI内容创作(AIGC)</span>
+                            <span class="win-chip">🎬 纪录片策划</span>
+                            <span class="win-chip">📱 短视频编导</span>
+                            <span class="win-chip">📸 摄影与视觉设计</span>
+                            <span class="win-chip">🤝 大客户管理(KA)</span>
+                            <span class="win-chip">🎪 线下展会统筹</span>
+                            <span class="win-chip">📋 活动方案策划</span>
+                            <span class="win-chip">📊 数据分析</span>
+                        </div>
+
+                        <!-- Progress bars for skill levels -->
+                        <div style="margin-top:8px;">
+                            <div style="font-size:11px;font-weight:bold;margin-bottom:4px;">技能熟练度</div>
+                            <div style="margin-bottom:3px;font-size:10px;">内容创作</div>
+                            <div class="win-progress" style="margin-bottom:6px;"><div class="win-progress-fill" style="width:92%;">92%</div></div>
+                            <div style="margin-bottom:3px;font-size:10px;">活动策划</div>
+                            <div class="win-progress" style="margin-bottom:6px;"><div class="win-progress-fill" style="width:88%;">88%</div></div>
+                            <div style="margin-bottom:3px;font-size:10px;">AI工具应用</div>
+                            <div class="win-progress"><div class="win-progress-fill" style="width:80%;">80%</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             PROJECTS
+             ============================================ -->
+        <div id="projects" style="background:#d4d0c8;padding:8px;border-top:1px solid #808080;">
+
+            <div style="border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #808080;border-bottom:2px solid #808080;">
+                <div style="background:linear-gradient(to right,#0a246a,#1641c6);color:#fff;padding:3px 8px;font-size:11px;font-weight:bold;display:flex;align-items:center;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <svg width="14" height="14" viewBox="0 0 16 16"><rect x="1" y="3" width="6" height="5" fill="#ffd700" stroke="#c0a000" stroke-width="1"/><rect x="9" y="3" width="6" height="12" fill="#ffd700" stroke="#c0a000" stroke-width="1"/><rect x="1" y="10" width="6" height="5" fill="#ffd700" stroke="#c0a000" stroke-width="1"/></svg>
+                        精选项目 (Selected Projects)
+                    </div>
+                    <span style="font-size:10px;font-weight:normal;">共 5 个项目 | 单击卡片查看详情</span>
+                </div>
+
+                <!-- Explorer-style toolbar for projects -->
+                <div style="display:flex;align-items:center;gap:2px;padding:3px 4px;border-bottom:1px solid #c0c0c0;background:#d4d0c8;">
+                    <button class="win-btn" style="min-width:30px;padding:1px 6px;font-size:10px;" onclick="filterProjects('all')">全部</button>
+                    <button class="win-btn" style="min-width:30px;padding:1px 6px;font-size:10px;" onclick="filterProjects('video')">🎬 影像</button>
+                    <button class="win-btn" style="min-width:30px;padding:1px 6px;font-size:10px;" onclick="filterProjects('business')">💼 商业</button>
+                    <div style="width:1px;height:16px;background:#808080;margin:0 2px;"></div>
+                    <span style="font-size:10px;color:#555;">排序：</span>
+                    <button class="win-btn" style="min-width:30px;padding:1px 6px;font-size:10px;">名称 ↑</button>
+                </div>
+
+                <div style="padding:8px;">
+                    <div class="projects-win-grid" id="projects-grid">
+
+                        <!-- Project 1 -->
+                        <div class="project-win-card" data-category="video" onclick="openProjectModal('project-1')">
+                            <div class="project-win-title-bar">
+                                <svg width="12" height="12" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="#ffd700" stroke="#c0a000" stroke-width="1"/><polygon points="6,5 6,11 11,8" fill="#333"/></svg>
+                                毕设纪录片《一脉火龙》
+                            </div>
+                            <div class="project-win-cover">
+                                <img src="Projects/project-1-documentary.JPG" alt="毕设纪录片《一脉火龙》">
+                            </div>
+                            <div class="project-win-body">
+                                <div class="project-win-desc">非遗传承挖掘、剧本与拍摄策划。深入记录火龙文化的传承历程。</div>
+                                <div style="border-top:1px solid #c0c0c0;padding-top:4px;">
+                                    <span class="project-win-tag">🎬 纪录片</span>
+                                    <span class="project-win-tag">🏮 非遗文化</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 2 -->
+                        <div class="project-win-card" data-category="video" onclick="openProjectModal('project-2')">
+                            <div class="project-win-title-bar">
+                                <svg width="12" height="12" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="#ffd700" stroke="#c0a000" stroke-width="1"/><polygon points="6,5 6,11 11,8" fill="#333"/></svg>
+                                AI 动画短片《月光光》
+                            </div>
+                            <div class="project-win-cover">
+                                <img src="Projects/project-2-ai-animation.jpg" alt="AI动画短片《月光光》">
+                            </div>
+                            <div class="project-win-body">
+                                <div class="project-win-desc">客家童年记忆与乡愁故事，探索前沿 AIGC 技术。</div>
+                                <div style="border-top:1px solid #c0c0c0;padding-top:4px;">
+                                    <span class="project-win-tag">🤖 AIGC</span>
+                                    <span class="project-win-tag">🏆 全国优秀奖</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 3 -->
+                        <div class="project-win-card" data-category="video" onclick="openProjectModal('project-3')">
+                            <div class="project-win-title-bar">
+                                <svg width="12" height="12" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="#ffd700" stroke="#c0a000" stroke-width="1"/><polygon points="6,5 6,11 11,8" fill="#333"/></svg>
+                                剧情短片《宿舍受骗记》
+                            </div>
+                            <div class="project-win-cover">
+                                <img src="Projects/project-3-dorm-scam.jpg" alt="剧情短片《宿舍受骗记》">
+                            </div>
+                            <div class="project-win-body">
+                                <div class="project-win-desc">小成品微短剧，关注校园生活与社会议题。</div>
+                                <div style="border-top:1px solid #c0c0c0;padding-top:4px;">
+                                    <span class="project-win-tag">🎭 短剧</span>
+                                    <span class="project-win-tag">🏆 最佳导演奖</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 4 -->
+                        <div class="project-win-card" data-category="business" onclick="openProjectModal('project-4')">
+                            <div class="project-win-title-bar">
+                                <svg width="12" height="12" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="10" fill="#d4d0c8" stroke="#808080" stroke-width="1"/><rect x="5" y="2" width="6" height="3" fill="#d4d0c8" stroke="#808080" stroke-width="1"/></svg>
+                                市级媒体内容创作
+                            </div>
+                            <div class="project-win-cover">
+                                <img src="Projects/project-4-tesla-fleet.JPG" alt="市级媒体内容创作">
+                            </div>
+                            <div class="project-win-body">
+                                <div class="project-win-desc">传统媒体中的创意内容产出及商业合作。</div>
+                                <div style="border-top:1px solid #c0c0c0;padding-top:4px;">
+                                    <span class="project-win-tag">📰 媒体</span>
+                                    <span class="project-win-tag">✍️ 内容创作</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 5 -->
+                        <div class="project-win-card" data-category="business" onclick="openProjectModal('project-5')">
+                            <div class="project-win-title-bar">
+                                <svg width="12" height="12" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="10" fill="#d4d0c8" stroke="#808080" stroke-width="1"/><rect x="5" y="2" width="6" height="3" fill="#d4d0c8" stroke="#808080" stroke-width="1"/></svg>
+                                特斯拉大客户深度运营
+                            </div>
+                            <div class="project-win-cover">
+                                <img src="Projects/project-5-tesla-operation.jpg.jpg" alt="特斯拉大客户深度运营">
+                            </div>
+                            <div class="project-win-body">
+                                <div class="project-win-desc">线下统筹与宣发物料制作，将品牌理念转化为切实的线下体验。</div>
+                                <div style="border-top:1px solid #c0c0c0;padding-top:4px;">
+                                    <span class="project-win-tag">🚗 Tesla</span>
+                                    <span class="project-win-tag">📊 ROI优化</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="win-status-bar" style="padding:2px 4px;">
+                    <div class="win-status-pane">5 个对象</div>
+                    <div class="win-status-pane">单击项目可查看详细信息</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             CONTACT
+             ============================================ -->
+        <div id="contact" style="background:#d4d0c8;padding:8px;border-top:1px solid #808080;">
+
+            <div style="border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #808080;border-bottom:2px solid #808080;">
+                <div style="background:linear-gradient(to right,#0a246a,#1641c6);color:#fff;padding:3px 8px;font-size:11px;font-weight:bold;display:flex;align-items:center;gap:6px;">
+                    <svg width="14" height="14" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="9" fill="#ffd700" stroke="#c0a000" stroke-width="1"/><polyline points="2,4 8,10 14,4" fill="none" stroke="#c0a000" stroke-width="1.5"/></svg>
+                    联系方式 (Let&apos;s Connect)
+                </div>
+
+                <div style="padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:8px;" class="skills-grid">
+
+                    <!-- Contact Details -->
+                    <div>
+                        <div style="font-size:11px;font-weight:bold;margin-bottom:4px;background:#c0c0c0;padding:2px 4px;border:1px solid #808080;">📬 联系信息</div>
+                        <div style="background:#fff;border-top:1px solid #808080;border-left:1px solid #808080;border-right:1px solid #fff;border-bottom:1px solid #fff;padding:6px;">
+                            <div class="win-contact-row">
+                                <span class="win-contact-label">📧 邮箱</span>
+                                <a href="mailto:979855416@qq.com" class="win-link">979855416@qq.com</a>
+                            </div>
+                            <div class="win-contact-row">
+                                <span class="win-contact-label">🎓 院校</span>
+                                <span>石河子大学 新闻传播学院</span>
+                            </div>
+                            <div class="win-contact-row">
+                                <span class="win-contact-label">🔍 求职</span>
+                                <span style="color:#008000;font-weight:bold;">● 产品运营 / 内容创作实习</span>
+                            </div>
+                            <div class="win-contact-row" style="border-bottom:none;">
+                                <span class="win-contact-label">📄 简历</span>
+                                <a href="public/resume.pdf" download class="win-btn" style="font-size:10px;padding:1px 8px;">⬇ 下载简历</a>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:8px;padding:6px;background:#ffffc0;border:1px solid #c0a000;font-size:10px;display:flex;gap:4px;align-items:flex-start;">
+                            <span style="font-size:14px;">💡</span>
+                            <span>找寻产品运营/内容创作相关实习中，随时欢迎交流！</span>
+                        </div>
+                    </div>
+
+                    <!-- Certificates -->
+                    <div>
+                        <div style="font-size:11px;font-weight:bold;margin-bottom:4px;background:#c0c0c0;padding:2px 4px;border:1px solid #808080;">🏆 证书与荣誉</div>
+                        <div class="certs-scrollbox" id="certsBox" style="max-height:160px;overflow-y:auto;">
+                            <img class="cert-thumb" src="media/certificates/cert1.JPG" alt="证书1" onclick="openCertModal(this.src)">
+                            <img class="cert-thumb" src="media/certificates/cert2.png" alt="证书2" onclick="openCertModal(this.src)">
+                            <img class="cert-thumb" src="media/certificates/cert3.png" alt="证书3" onclick="openCertModal(this.src)">
+                            <img class="cert-thumb" src="media/certificates/cert4.png" alt="证书4" onclick="openCertModal(this.src)">
+                            <img class="cert-thumb" src="media/certificates/cert5.png" alt="证书5" onclick="openCertModal(this.src)">
+                            <img class="cert-thumb" src="media/certificates/cert6.png" alt="证书6" onclick="openCertModal(this.src)">
+                            <img class="cert-thumb" src="media/certificates/cert7.png" alt="证书7" onclick="openCertModal(this.src)">
+                            <img class="cert-thumb" src="media/certificates/cert8.png" alt="证书8" onclick="openCertModal(this.src)">
+                        </div>
+                        <div style="font-size:10px;color:#555;margin-top:2px;">单击证书图片可放大查看</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Status Bar -->
+        <div class="win-status-bar" style="border-top:2px solid #fff;">
+            <div class="win-status-pane" style="flex:1;">✅ 完成</div>
+            <div class="win-status-pane">Internet区域</div>
+            <div class="win-status-pane">🔒 安全</div>
         </div>
     </div>
 
     <footer>
-        &copy; 2026 林嘉敏 (Lin Jiamin). All rights reserved.
+        &copy; 2026 林嘉敏 (Lin Jiamin). All Rights Reserved. | 本页面在 Microsoft Internet Explorer 6.0 下效果最佳 | 推荐分辨率: 1024×768
     </footer>
-
-    <script src="script.js"></script>
-
-    <script>
-        // Project Modal Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('projectModal');
-            const modalClose = document.querySelector('.modal-close');
-            const modalBody = document.querySelector('.modal-body');
-
-            console.log('Modal elements loaded:', { modal, modalClose, modalBody });
-
-            // Project data
-            const projectData = {
-                'project-1': {
-                    title: '毕设纪录片《一脉火龙》',
-                    image: 'Projects/project-1-documentary.JPG',
-                    description: '非遗传承挖掘、剧本与拍摄策划。<br><br>扩展描述：这是一个关于非物质文化遗产传承的纪录片项目，深入挖掘火龙文化的起源与发展，通过实地调研和人物访谈，展现了非遗传承中个人与群体的矛盾及故事。项目正在进行，将独立完成从前期策划到后期制作的全流程。'
-                },
-                'project-2': {
-                    title: 'AI 动画短片《月光光》',
-                    image: 'Projects/project-2-ai-animation.jpg',
-                    description: '客家童年记忆与乡愁故事，探索前沿 AIGC 技术。<br><br>扩展描述：使用AI生成技术创作的动画短片，融合了客家童谣与传统美学。项目探索了Stable Diffusion、Midjourney等AI工具在动画制作中的应用，实现了从文本到视觉的创造性转换。作品在全国即梦AI大赛中获优秀奖。'
-                },
-                'project-3': {
-                    title: '剧情短片《宿舍受骗记》',
-                    image: 'Projects/project-3-dorm-scam.jpg',
-                    description: '小成品微短剧，关注校园生活与社会议题。<br><br>扩展描述：一部关注大学生防诈骗的剧情短片，通过ai获取灵感，以幽默讽刺的手法揭示校园诈骗的常见手段。该作品获得中国好创意河马杯最佳导演奖，在校园内引起广泛讨论。'
-                },
-                'project-4': {
-                    title: '市级媒体内容创作',
-                    image: 'Projects/project-4-tesla-fleet.JPG',
-                    description: '传统媒体中的创意内容产出及商业合作。<br><br>扩展描述：在市级媒体机构担任新媒体记者期间，负责创意内容策划与制作。涵盖新闻报道、深度访谈、视觉叙事等多种形式，同时探索媒体与商业品牌的合作模式，实现内容价值最大化。',
-                    type: 'media'
-                },
-                'project-5': {
-                    title: '特斯拉大客户深度运营体验',
-                    image: 'Projects/project-5-tesla-operation.jpg.jpg',
-                    description: '线下统筹与宣发物料制作，将品牌理念转化为切实的线下体验与客户连接。',
-                    type: 'tesla'
-                }
-            };
-
-            // Function to open modal with project details
-            function openModal(projectId) {
-                console.log('Opening modal for:', projectId);
-                const project = projectData[projectId];
-                if (!project) {
-                    console.error('Project not found:', projectId);
-                    return;
-                }
-
-                // Create modal content
-                let content;
-                if (project.type === 'tesla') {
-                    // Tesla project with professional UI framework
-                    content = `
-                        <h2 class="modal-project-title">${project.title}</h2>
-                        <div class="modal-project-image">
-                            <img src="${project.image}" alt="${project.title}">
-                        </div>
-                        <div class="tesla-detail-container">
-
-                            <h2 style="color: #1a1a1a; margin-bottom: 20px; font-size: 24px; font-weight: bold;">特斯拉大客户深度体验运营复盘</h2>
-                            <div class="stat-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
-                                <div style="background: #fff; border: 1px solid #e1e8f0; padding: 15px; border-radius: 10px; text-align: center;">
-                                    <div style="color: #0088cc; font-size: 1.5rem; font-weight: bold;">20+</div>
-                                    <div style="color: #666; font-size: 1rem;">单月策划场次</div>
-                                </div>
-                                <div style="background: #fff; border: 1px solid #e1e8f0; padding: 15px; border-radius: 10px; text-align: center;">
-                                    <div style="color: #0088cc; font-size: 1.5rem; font-weight: bold;">-10%</div>
-                                    <div style="color: #666; font-size: 1rem;">预算成本优化</div>
-                                </div>
-                                <div style="background: #fff; border: 1px solid #e1e8f0; padding: 15px; border-radius: 10px; text-align: center;">
-                                    <div style="color: #0088cc; font-size: 1.5rem; font-weight: bold;">+15%</div>
-                                    <div style="color: #666; font-size: 1rem;">留资环比提升</div>
-                                </div>
-                            </div>
-
-                            <section class="detail-card" style="background: #fff; border: 1px solid #e1e8f0; padding: 20px; border-radius: 12px; margin-bottom: 24px;">
-                                <h4 style="color: #0088cc; margin-top: 0; font-size: 19px; font-weight: bold;"><i class="fas fa-bullseye"></i> 数据驱动：试驾方案的精细化与提效</h4>
-                                <p style="font-size: 17px; color: #333; line-height: 1.7;">
-                                <strong>数据复盘与需求拆解</strong>：通过复盘前期活动的参与意向数据，发现"一刀切"的试驾流程导致高净值客户沟通成本过高，而普通员工的关注点未被精准覆盖，造成了资源和时间的浪费。<br><br>
-
-                                <strong>实际动作</strong>：基于数据反馈，将试驾会流程进行分层设计。针对大规模定向试驾，根据不同员工的差异化偏好，预设不同的体验模块。<br><br>
-
-                                <strong>产品思维：分层提效。将精力花在刀刃上</strong>：
-                                </p>
-
-                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 20px 0;">
-                                    <div style="background: #f0f7ff; border-left: 4px solid #0088cc; padding: 15px; border-radius: 8px;">
-                                        <strong style="color: #0066cc; font-size: 17px;">高意向</strong><br>
-                                        <div style="font-size: 17px; color: #333; line-height: 1.7; margin-top: 8px;">
-                                            • 精确识别兴趣点，按不同销售擅长分配客户<br>
-                                            • 数据证明：这种精准对接能显著提升销售kpi
-                                        </div>
-                                    </div>
-                                    <div style="background: #f0f7ff; border-left: 4px solid #006699; padding: 15px; border-radius: 8px;">
-                                        <strong style="color: #0066cc; font-size: 17px;">兴趣层</strong><br>
-                                        <div style="font-size: 17px; color: #333; line-height: 1.7; margin-top: 8px;">
-                                            • 集中解答用车成本、补能效率等高频痛点<br>
-                                            • 多互动引起兴趣，并在互动中植入企业文化，扩大传播与提升现场咨询效率
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <p style="font-size: 17px; color: #333; line-height: 1.7;">
-                                <strong>实战产出</strong>：通过这套数据驱动的个性化方案，减少了无效物料和人力的投入。在在预算降低 10% 的前提下，实现了留资量环比 15% 的提升，让单场活动的投入产出比（ROI）达到最大化 。
-                                </p>
-
-                                <div style="text-align: center; margin: 20px 0; padding: 15px; background: #f8fbff; border-radius: 8px; border: 1px solid #e1e8f0;">
-                                    <div style="color: #0066cc; font-size: 22px; font-weight: bold; margin-bottom: 5px;">预算降低 <span style="color: #0088cc;">10%</span> • 留资提升 <span style="color: #0088cc;">15%</span></div>
-                                    <div style="font-size: 16px; color: #666;">让单场活动的<strong>投入产出比（ROI）</strong>达到最大化</div>
-                                </div>
-                            </section>
-
-                            <section class="detail-card" style="background: #fff; border: 1px solid #e1e8f0; padding: 20px; border-radius: 12px; margin-bottom: 16px; height: auto;">
-                                <h4 style="color: #0088cc; margin-top: 0; font-size: 19px; font-weight: bold;"><i class="fas fa-network-wired"></i> 资源统筹与跨部门协同</h4>
-                                <p style="font-size: 17px; color: #333; line-height: 1.7; margin-bottom: 0;">全权负责从场地洽谈、供应商管理到物料采买全流程。在高压环境下，保持单月策划执行 <strong>20+ 场</strong>活动。<br><br>
-                                <strong>向上对接经理汇报，横向调配销售资源，向下管控供应商</strong>。<br><br>
-                                在特斯拉极简的人力架构下，确保项目高频且零差错闭环。</p>
-
-                                <div style="margin-top: 10px; text-align: center;">
-                                    <div style="width: 100%; height: auto; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-                                        <img src="Projects/project-5-tesla-team.jpg" alt="特斯拉团队协作与活动执行"
-                                             style="width: 100%; height: auto; display: block;">
-                                    </div>
-                                    <div style="color: #94a3b8; font-size: 12px; margin-top: 4px; font-style: italic;">
-                                        特斯拉大客户试驾会活动现场执行与团队协作
-                            </section>
-                            <div style="background: #f0f7ff; padding: 25px; border-radius: 12px; border-left: 4px solid #0088cc;">
-                                <h4 style="margin-top: 0; color: #0088cc; font-size: 19px; font-weight: bold;">🚀 能源体系价值观重塑</h4>
-                                <p style="font-size: 17px; color: #333; line-height: 1.7; font-style: italic;">
-                                <strong>从"造车"到"能源架构"</strong>：理解了 Powerwall、储能超级工厂、AI自动驾驶构成的闭环能源生态。<br><br>
-                                <strong>第一性原理的冲击</strong>：意识到特斯拉不仅仅是在卖车，而是在推行"可持续能源转型"的确定性未来。<br><br>
-                                <strong>思维变迁</strong>：跳出业务琐碎，学会从商业生态高度反思。在互联网时代，没有硬广支撑的深度试驾，本身就是最高效的<strong>精准传播</strong>。
-                                </p>
-                            </div>
-                        </div>
-                    `;
-                } else if (project.type === 'media') {
-                    // Media project with detailed content
-                    content = `
-                        <h2 class="modal-project-title">${project.title}</h2>
-                        <div class="modal-project-image">
-                            <img src="${project.image}" alt="${project.title}">
-                        </div>
-                        <div class="tesla-detail-container">
-
-                            <h2 style="color: #1a1a1a; margin-bottom: 20px; font-size: 24px; font-weight: bold;">市级媒体内容创作（阳江日报社）</h2>
-                            <div class="stat-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
-                                <div style="background: #fff; border: 1px solid #e1e8f0; padding: 15px; border-radius: 10px; text-align: center;">
-                                    <div style="color: #0088cc; font-size: 1.5rem; font-weight: bold;">20w+</div>
-                                    <div style="color: #666; font-size: 1rem;">单篇最高阅读量</div>
-                                </div>
-                                <div style="background: #fff; border: 1px solid #e1e8f0; padding: 15px; border-radius: 10px; text-align: center;">
-                                    <div style="color: #0088cc; font-size: 1.5rem; font-weight: bold;">5k</div>
-                                    <div style="color: #666; font-size: 1rem;">最高点赞</div>
-                                </div>
-                                <div style="background: #fff; border: 1px solid #e1e8f0; padding: 15px; border-radius: 10px; text-align: center;">
-                                    <div style="color: #0088cc; font-size: 1.5rem; font-weight: bold;">10+</div>
-                                    <div style="color: #666; font-size: 1rem;">视频深度专题</div>
-                                </div>
-                            </div>
-
-<h4 style="color: #0088cc; margin-top: 0; font-size: 19px; font-weight: bold;">核心概述</h4>
-<p style="font-size: 17px; color: #333; line-height: 1.6; margin: 0.5em 0;">在市级媒体机构担任新媒体记者期间，深耕融媒体内容采、编、发全链路。通过新闻报道与视觉叙事双驱动，不仅完成了多项高传播量的政务宣传，更成功探索了地市级媒体与商业品牌的深度合作模式。</p>
-
-                            <section class="detail-card" style="background: #fff; border: 1px solid #e1e8f0; padding: 20px; border-radius: 12px; margin-bottom: 24px;">
-                                <h4 style="color: #0088cc; margin-top: 0; font-size: 19px; font-weight: bold;">🎨 媒体作品展示 </h4>
-
-                                <!-- 视觉快讯 · 纪实摄影 -->
-                                <div style="margin: 60px 0 30px; display: flex; align-items: center; justify-content: space-between; border-left: 6px solid #2980b9; padding-left: 15px;">
-                                    <h2 style="margin: 0; font-size: 26px; color: #1e293b;">视觉快讯 · 纪实摄影</h2>
-                                    <span style="background: #2980b9; color: white; padding: 4px 15px; border-radius: 4px; font-size: 14px;">摄影作品</span>
-                                </div>
-                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 60px;">
-                                    <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 652/1074;">
-                                        <img src="media/纪实摄影作品1.png" alt="纪实摄影作品1" style="width: 100%; height: 100%; object-fit: contain;">
-                                    </div>
-                                    <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 960/1214;">
-                                        <img src="media/纪实摄影作品2.jpg" alt="纪实摄影作品2" style="width: 100%; height: 100%; object-fit: contain;">
-                                    </div>
-                                    <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 662/1074;">
-                                        <img src="media/纪实摄影作品3.png" alt="纪实摄影作品3" style="width: 100%; height: 100%; object-fit: contain;">
-                                    </div>
-                                </div>
-
-                                <!-- 视听现场 · 视频号精品 -->
-                                <div style="margin: 60px 0 30px; display: flex; align-items: center; justify-content: space-between; border-left: 6px solid #2980b9; padding-left: 15px;">
-                                    <h2 style="margin: 0; font-size: 26px; color: #1e293b;">视听现场 · 视频号精品</h2>
-                                    <span style="background: #2980b9; color: white; padding: 4px 15px; border-radius: 4px; font-size: 14px;">竖向滑动查看</span>
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; margin-bottom: 80px; align-items: stretch;">
-                                    <!-- 左侧：两个大竖图 -->
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                                        <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 722/1286;">
-                                            <img src="media/视频号竖图1.png" alt="视频号竖图1" style="width: 100%; height: 100%; object-fit: contain;">
-                                        </div>
-                                        <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 704/1290;">
-                                            <img src="media/视频号竖图2.png" alt="视频号竖图2" style="width: 100%; height: 100%; object-fit: contain;">
-                                        </div>
-                                    </div>
-                                    <!-- 右侧：竖向滑动区域 -->
-                                    <div style="position: relative; height: 100%;">
-                                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 8px;">
-                                            <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 860/266; flex-shrink: 0;">
-                                                <img src="media/视频号横图1.png" alt="视频号横图1" style="width: 100%; height: 100%; object-fit: contain;">
-                                            </div>
-                                            <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 874/230; flex-shrink: 0;">
-                                                <img src="media/视频号横图2.png" alt="视频号横图2" style="width: 100%; height: 100%; object-fit: contain;">
-                                            </div>
-                                            <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 16/9; flex-shrink: 0;">
-                                                <img src="media/视频号横图3.png" alt="视频号横图3" style="width: 100%; height: 100%; object-fit: contain;">
-                                            </div>
-                                            <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 16/9; flex-shrink: 0;">
-                                                <img src="media/视频号横图4.png" alt="视频号横图4" style="width: 100%; height: 100%; object-fit: contain;">
-                                            </div>
-                                            <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 16/9; flex-shrink: 0;">
-                                                <img src="media/视频号横图5.png" alt="视频号横图5" style="width: 100%; height: 100%; object-fit: contain;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 采编深度 · 纸媒与专题 -->
-                                <div style="margin: 60px 0 30px; display: flex; align-items: center; justify-content: space-between; border-left: 6px solid #2980b9; padding-left: 15px;">
-                                    <h2 style="margin: 0; font-size: 26px; color: #1e293b;">采编深度 · 纸媒与专题</h2>
-                                    <span style="background: #2980b9; color: white; padding: 4px 15px; border-radius: 4px; font-size: 14px;">采编作品</span>
-                                </div>
-                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-                                    <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 3/4;">
-                                        <img src="media/纸媒作品1.PNG" alt="纸媒作品1" style="width: 100%; height: 100%; object-fit: contain;">
-                                    </div>
-                                    <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 3/4;">
-                                        <img src="media/纸媒作品2.PNG" alt="纸媒作品2" style="width: 100%; height: 100%; object-fit: contain;">
-                                    </div>
-                                    <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 3/4;">
-                                        <img src="media/纸媒作品3.png" alt="纸媒作品3" style="width: 100%; height: 100%; object-fit: contain;">
-                                    </div>
-                                    <div style="background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 3/4;">
-                                        <img src="media/纸媒作品4.png" alt="纸媒作品4" style="width: 100%; height: 100%; object-fit: contain;">
-                                    </div>
-                                </div>
-
-                            </section>
-
-                            <div class="two-column-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 24px;">
-
-                                <!-- 左侧：垂直行业访谈 -->
-                                <div class="project-card-modern" style="background: #fff; border: 1px solid #e1e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
-                                    <div class="card-header" style="background: linear-gradient(135deg, #0088cc, #006699); padding: 16px; color: white;">
-                                        <h4 style="margin: 0; font-size: 18px; font-weight: bold;">1. 垂直行业访谈：构建人物弧光</h4>
-                                    </div>
-                                    <div class="card-body" style="padding: 20px;">
-                                        <div class="highlight-section" style="margin-bottom: 20px;">
-                                            <div class="section-title" style="display: flex; align-items: center; margin-bottom: 8px;">
-                                                <span style="display: inline-block; width: 8px; height: 8px; background: #0088cc; border-radius: 50%; margin-right: 8px;"></span>
-                                                <h5 style="color: #0088cc; margin: 0; font-size: 16px; font-weight: 600;">作品亮点</h5>
-                                            </div>
-                                            <p style="font-size: 15px; color: #333; line-height: 1.6; margin: 0;">
-                                                独立撰写并执行《最美科技工作者》系列专题视频文案（卢昌阜、朱峰华等专家访谈）。
-                                            </p>
-                                        </div>
-
-                                        <div class="detail-section">
-                                            <div class="section-title" style="display: flex; align-items: center; margin-bottom: 8px;">
-                                                <span style="display: inline-block; width: 8px; height: 8px; background: #0088cc; border-radius: 50%; margin-right: 8px;"></span>
-                                                <h5 style="color: #0088cc; margin: 0; font-size: 16px; font-weight: 600;">细化内容</h5>
-                                            </div>
-                                            <p style="font-size: 15px; color: #333; line-height: 1.6; margin: 0;">
-                                                <strong>脚本逻辑</strong>：通过"研发困境-实验场景-社会影响"的强逻辑叙事，将晦涩的科技内容转化为生动的视觉影像。
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 右侧：商业品牌赋能 -->
-                                <div class="project-card-modern" style="background: #fff; border: 1px solid #e1e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
-                                    <div class="card-header" style="background: linear-gradient(135deg, #006699, #0088cc); padding: 16px; color: white;">
-                                        <h4 style="margin: 0; font-size: 18px; font-weight: bold;">2. 商业品牌赋能：内容价值与经营转化</h4>
-                                    </div>
-                                    <div class="card-body" style="padding: 20px;">
-                                        <div class="highlight-section" style="margin-bottom: 20px;">
-                                            <div class="section-title" style="display: flex; align-items: center; margin-bottom: 8px;">
-                                                <span style="display: inline-block; width: 8px; height: 8px; background: #0088cc; border-radius: 50%; margin-right: 8px;"></span>
-                                                <h5 style="color: #0088cc; margin: 0; font-size: 16px; font-weight: 600;">经营亮点</h5>
-                                            </div>
-                                            <p style="font-size: 15px; color: #333; line-height: 1.6; margin: 0;">
-                                                2024年阳江市邮储银行宣传项目、地方特产宣传。
-                                            </p>
-                                        </div>
-
-                                        <div class="detail-section">
-                                            <div class="section-title" style="display: flex; align-items: center; margin-bottom: 8px;">
-                                                <span style="display: inline-block; width: 8px; height: 8px; background: #0088cc; border-radius: 50%; margin-right: 8px;"></span>
-                                                <h5 style="color: #0088cc; margin: 0; font-size: 16px; font-weight: 600;">细化内容</h5>
-                                            </div>
-                                            <p style="font-size: 15px; color: #333; line-height: 1.6; margin: 0;">
-                                                <strong>政商宣传策划</strong>：深度参与报社经营部项目，将邮储银行等品牌诉求深度融入民生故事，连续输出高质量视频报道，获合作方高度认可。
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div style="background: #f0f7ff; padding: 25px; border-radius: 12px; border-left: 4px solid #0088cc; margin-top: 24px;">
-                                <h4 style="margin-top: 0; color: #0088cc; font-size: 19px; font-weight: bold;">🎯 媒体融合的核心价值</h4>
-                                <p style="font-size: 17px; color: #333; line-height: 1.7; font-style: italic;">
-                                    <strong>从"新闻报道"到"视觉叙事"</strong>：在传统媒体转型的浪潮中，探索融媒体内容的全链路生产，实现新闻价值与传播效果的双重提升。<br><br>
-                                    <strong>从"内容创作"到"商业赋能"</strong>：突破媒体单纯的内容生产角色，将品牌诉求与民生故事深度融合，实现内容价值向商业价值的有效转化。<br><br>
-                                    <strong>思维升级</strong>：在媒体融合的实践中，不仅掌握了现代传播技术，更培养了将复杂信息转化为生动视觉叙事的能力，为未来的内容创作与商业运营奠定坚实基础。
-                                </p>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    // Default project layout
-                    content = `
-                        <h2 class="modal-project-title">${project.title}</h2>
-                        <div class="modal-project-image">
-                            ${projectId === 'project-2' || projectId === 'project-3' ?
-                                projectId === 'project-2' ?
-                                    `<a href="https://jimeng.jianying.com/ai-tool/work-detail/7610810411935370546?workDetailType=ShowcaseVideo&itemType=210&isShared=1" target="_blank" rel="noopener noreferrer">
-                                        <img src="${project.image}" alt="${project.title}">
-                                    </a>
-                                    <div class="image-hint" style="font-size: 12px; color: #666; text-align: center; margin-top: 8px; font-style: italic;">
-                                        （点击图片可跳转）
-                                    </div>` :
-                                    `<a href="https://www.xinpianchang.com/a13394272?channel=copyLink&from=webShare" target="_blank" rel="noopener noreferrer">
-                                        <img src="${project.image}" alt="${project.title}">
-                                    </a>
-                                    <div class="image-hint" style="font-size: 12px; color: #666; text-align: center; margin-top: 8px; font-style: italic;">
-                                        （点击图片可跳转）
-                                    </div>`
-                                :
-                                `<img src="${project.image}" alt="${project.title}">`
-                            }
-                        </div>
-                        <div class="modal-project-description">
-                            ${project.description}
-                        </div>
-                    `;
-                }
-
-                modalBody.innerHTML = content;
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-
-                console.log('Modal opened successfully');
-            }
-
-            // Function to close modal
-            function closeModal() {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-                console.log('Modal closed');
-            }
-
-            // Add click event listeners to project cards
-            const projectCards = document.querySelectorAll('.project-card');
-            console.log('Found project cards:', projectCards.length);
-
-            projectCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    // Don't open modal if clicking on links inside the card
-                    if (e.target.tagName === 'A' || e.target.closest('a')) {
-                        return;
-                    }
-
-                    const projectId = card.dataset.id;
-                    console.log('Card clicked, projectId:', projectId);
-
-                    if (projectId) {
-                        openModal(projectId);
-                    } else {
-                        console.warn('No data-id found on card');
-                    }
-                });
-            });
-
-            // Close modal events
-            if (modalClose) {
-                modalClose.addEventListener('click', closeModal);
-            } else {
-                console.error('Close button not found');
-            }
-
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal || e.target.classList.contains('modal-overlay')) {
-                    closeModal();
-                }
-            });
-
-            // Close modal with Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    closeModal();
-                }
-            });
-
-            console.log('Modal functionality initialized');
-        });
-    </script>
-
-    <script>
-        // Certificates Gallery using OGL
-        document.addEventListener('DOMContentLoaded', function() {
-            const certificatesGallery = document.getElementById('certificatesGallery');
-            if (!certificatesGallery) return;
-
-            // Get OGL classes from global namespace
-            const OGL = window.OGL || {};
-            const Camera = OGL.Camera || window.Camera;
-            const Mesh = OGL.Mesh || window.Mesh;
-            const Plane = OGL.Plane || window.Plane;
-            const Program = OGL.Program || window.Program;
-            const Renderer = OGL.Renderer || window.Renderer;
-            const Texture = OGL.Texture || window.Texture;
-            const Transform = OGL.Transform || window.Transform;
-
-            // Get placeholder element
-            const placeholder = certificatesGallery.querySelector('.gallery-placeholder');
-
-            // Check if OGL classes are available
-            console.log('Checking OGL classes:', {
-                Camera: !!Camera,
-                Mesh: !!Mesh,
-                Plane: !!Plane,
-                Program: !!Program,
-                Renderer: !!Renderer,
-                Texture: !!Texture,
-                Transform: !!Transform,
-                OGL: window.OGL
-            });
-            if (!Camera || !Mesh || !Plane || !Program || !Renderer || !Texture || !Transform) {
-                console.error('OGL classes not found. Make sure OGL library is loaded.');
-                console.error('Available window properties:', Object.keys(window).filter(k => k.includes('OGL') || k.includes('gl')));
-                // Keep placeholder visible
-                return;
-            }
-
-            // Certificate data - vertical images (portrait orientation)
-            const certificateItems = [
-                { image: encodeURI('Certificates/cert1.JPG'), text: '证书1' },
-                { image: encodeURI('Certificates/cert2.png'), text: '证书2' },
-                { image: encodeURI('Certificates/cert3.png'), text: '证书3' },
-                { image: encodeURI('Certificates/cert4.png'), text: '证书4' },
-                { image: encodeURI('Certificates/cert5.png'), text: '证书5' },
-                { image: encodeURI('Certificates/cert6.png'), text: '证书6' },
-                { image: encodeURI('Certificates/cert7.png'), text: '证书7' },
-                { image: encodeURI('Certificates/cert8.png'), text: '证书8' },
-                { image: encodeURI('Certificates/省三 1作3.png'), text: '省三等奖（第一作者）' },
-                { image: encodeURI('Certificates/省二 一作 6.png'), text: '省二等奖（第一作者）' },
-                { image: encodeURI('Certificates/省二 二作3.png'), text: '省二等奖（第二作者）' },
-            ];
-
-            console.log('Certificate items loaded:', certificateItems);
-
-            // Initialize OGL gallery
-            // Copy the OGL gallery classes from the provided code
-            // We'll create a simplified version based on the provided App class
-
-            // First, define helper functions from the provided code
-            function debounce(func, wait) {
-                let timeout;
-                return function (...args) {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(this, args), wait);
-                };
-            }
-
-            function lerp(p1, p2, t) {
-                return p1 + (p2 - p1) * t;
-            }
-
-            function autoBind(instance) {
-                const proto = Object.getPrototypeOf(instance);
-                Object.getOwnPropertyNames(proto).forEach(key => {
-                    if (key !== 'constructor' && typeof instance[key] === 'function') {
-                        instance[key] = instance[key].bind(instance);
-                    }
-                });
-            }
-
-            function createTextTexture(gl, text, font = 'bold 30px monospace', color = 'black') {
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                context.font = font;
-                const metrics = context.measureText(text);
-                const textWidth = Math.ceil(metrics.width);
-                const textHeight = Math.ceil(parseInt(font, 10) * 1.2);
-                canvas.width = textWidth + 20;
-                canvas.height = textHeight + 20;
-                context.font = font;
-                context.fillStyle = color;
-                context.textBaseline = 'middle';
-                context.textAlign = 'center';
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.fillText(text, canvas.width / 2, canvas.height / 2);
-                const texture = new Texture(gl, { generateMipmaps: false });
-                texture.image = canvas;
-                return { texture, width: canvas.width, height: canvas.height };
-            }
-
-            // Title class
-            class Title {
-                constructor({ gl, plane, renderer, text, textColor = '#545050', font = '30px sans-serif' }) {
-                    autoBind(this);
-                    this.gl = gl;
-                    this.plane = plane;
-                    this.renderer = renderer;
-                    this.text = text;
-                    this.textColor = textColor;
-                    this.font = font;
-                    this.createMesh();
-                }
-                createMesh() {
-                    const { texture, width, height } = createTextTexture(this.gl, this.text, this.font, this.textColor);
-                    const geometry = new Plane(this.gl);
-                    const program = new Program(this.gl, {
-                        vertex: `
-                            attribute vec3 position;
-                            attribute vec2 uv;
-                            uniform mat4 modelViewMatrix;
-                            uniform mat4 projectionMatrix;
-                            varying vec2 vUv;
-                            void main() {
-                                vUv = uv;
-                                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                            }
-                        `,
-                        fragment: `
-                            precision highp float;
-                            uniform sampler2D tMap;
-                            varying vec2 vUv;
-                            void main() {
-                                vec4 color = texture2D(tMap, vUv);
-                                if (color.a < 0.1) discard;
-                                gl_FragColor = color;
-                            }
-                        `,
-                        uniforms: { tMap: { value: texture } },
-                        transparent: true
-                    });
-                    this.mesh = new Mesh(this.gl, { geometry, program });
-                    const aspect = width / height;
-                    const textHeight = this.plane.scale.y * 0.15;
-                    const textWidth = textHeight * aspect;
-                    this.mesh.scale.set(textWidth, textHeight, 1);
-                    this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeight * 0.5 - 0.05;
-                    this.mesh.setParent(this.plane);
-                }
-            }
-
-            // Media class
-            class Media {
-                constructor({
-                    geometry,
-                    gl,
-                    image,
-                    index,
-                    length,
-                    renderer,
-                    scene,
-                    screen,
-                    text,
-                    viewport,
-                    bend,
-                    textColor,
-                    borderRadius = 0,
-                    font
-                }) {
-                    this.extra = 0;
-                    this.geometry = geometry;
-                    this.gl = gl;
-                    this.image = image;
-                    this.index = index;
-                    this.length = length;
-                    this.renderer = renderer;
-                    this.scene = scene;
-                    this.screen = screen;
-                    this.text = text;
-                    this.viewport = viewport;
-                    this.bend = bend;
-                    this.textColor = textColor;
-                    this.borderRadius = borderRadius;
-                    this.font = font;
-                    this.createShader();
-                    this.createMesh();
-                    this.createTitle();
-                    this.onResize();
-                }
-                createShader() {
-                    const texture = new Texture(this.gl, {
-                        generateMipmaps: true
-                    });
-                    this.program = new Program(this.gl, {
-                        depthTest: false,
-                        depthWrite: false,
-                        vertex: `
-                            precision highp float;
-                            attribute vec3 position;
-                            attribute vec2 uv;
-                            uniform mat4 modelViewMatrix;
-                            uniform mat4 projectionMatrix;
-                            uniform float uTime;
-                            uniform float uSpeed;
-                            varying vec2 vUv;
-                            void main() {
-                                vUv = uv;
-                                vec3 p = position;
-                                p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
-                                gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
-                            }
-                        `,
-                        fragment: `
-                            precision highp float;
-                            uniform vec2 uImageSizes;
-                            uniform vec2 uPlaneSizes;
-                            uniform sampler2D tMap;
-                            uniform float uBorderRadius;
-                            varying vec2 vUv;
-
-                            float roundedBoxSDF(vec2 p, vec2 b, float r) {
-                                vec2 d = abs(p) - b;
-                                return length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - r;
-                            }
-
-                            void main() {
-                                vec2 ratio = vec2(
-                                    min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
-                                    min((uPlaneSizes.y / uPlaneSizes.x) / (uImageSizes.y / uImageSizes.x), 1.0)
-                                );
-                                vec2 uv = vec2(
-                                    vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
-                                    vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
-                                );
-                                vec4 color = texture2D(tMap, uv);
-
-                                float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
-
-                                // Smooth antialiasing for edges
-                                float edgeSmooth = 0.002;
-                                float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
-
-                                gl_FragColor = vec4(color.rgb, alpha);
-                            }
-                        `,
-                        uniforms: {
-                            tMap: { value: texture },
-                            uPlaneSizes: { value: [0, 0] },
-                            uImageSizes: { value: [0, 0] },
-                            uSpeed: { value: 0 },
-                            uTime: { value: 100 * Math.random() },
-                            uBorderRadius: { value: this.borderRadius }
-                        },
-                        transparent: true
-                    });
-                    const img = new Image();
-                    img.crossOrigin = 'anonymous';
-                    img.src = this.image;
-                    img.onload = () => {
-                        texture.image = img;
-                        this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
-                    };
-                }
-                createMesh() {
-                    this.plane = new Mesh(this.gl, {
-                        geometry: this.geometry,
-                        program: this.program
-                    });
-                    this.plane.setParent(this.scene);
-                }
-                createTitle() {
-                    this.title = new Title({
-                        gl: this.gl,
-                        plane: this.plane,
-                        renderer: this.renderer,
-                        text: this.text,
-                        textColor: this.textColor,
-                        font: this.font
-                    });
-                }
-                update(scroll, direction) {
-                    this.plane.position.x = this.x - scroll.current - this.extra;
-
-                    const x = this.plane.position.x;
-                    const H = this.viewport.width / 2;
-
-                    if (this.bend === 0) {
-                        this.plane.position.y = 0;
-                        this.plane.rotation.z = 0;
-                    } else {
-                        const B_abs = Math.abs(this.bend);
-                        const R = (H * H + B_abs * B_abs) / (2 * B_abs);
-                        const effectiveX = Math.min(Math.abs(x), H);
-
-                        const arc = R - Math.sqrt(R * R - effectiveX * effectiveX);
-                        if (this.bend > 0) {
-                            this.plane.position.y = -arc;
-                            this.plane.rotation.z = -Math.sign(x) * Math.asin(effectiveX / R);
-                        } else {
-                            this.plane.position.y = arc;
-                            this.plane.rotation.z = Math.sign(x) * Math.asin(effectiveX / R);
-                        }
-                    }
-
-                    this.speed = scroll.current - scroll.last;
-                    this.program.uniforms.uTime.value += 0.04;
-                    this.program.uniforms.uSpeed.value = this.speed;
-
-                    const planeOffset = this.plane.scale.x / 2;
-                    const viewportOffset = this.viewport.width / 2;
-                    this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
-                    this.isAfter = this.plane.position.x - planeOffset > viewportOffset;
-                    if (direction === 'right' && this.isBefore) {
-                        this.extra -= this.widthTotal;
-                        this.isBefore = this.isAfter = false;
-                    }
-                    if (direction === 'left' && this.isAfter) {
-                        this.extra += this.widthTotal;
-                        this.isBefore = this.isAfter = false;
-                    }
-                }
-                onResize({ screen, viewport } = {}) {
-                    if (screen) this.screen = screen;
-                    if (viewport) {
-                        this.viewport = viewport;
-                        if (this.plane.program.uniforms.uViewportSizes) {
-                            this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height];
-                        }
-                    }
-                    this.scale = this.screen.height / 1500;
-                    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
-                    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
-                    this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
-                    this.padding = 2;
-                    this.width = this.plane.scale.x + this.padding;
-                    this.widthTotal = this.width * this.length;
-                    this.x = this.width * this.index;
-                }
-            }
-
-            // App class
-            class App {
-                constructor(
-                    container,
-                    {
-                        items,
-                        bend,
-                        textColor = '#ffffff',
-                        borderRadius = 0,
-                        font = 'bold 30px Figtree',
-                        scrollSpeed = 2,
-                        scrollEase = 0.05
-                    } = {}
-                ) {
-                    document.documentElement.classList.remove('no-js');
-                    this.container = container;
-                    this.scrollSpeed = scrollSpeed;
-                    this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
-                    this.onCheckDebounce = debounce(this.onCheck, 200);
-                    this.createRenderer();
-                    this.createCamera();
-                    this.createScene();
-                    this.onResize();
-                    this.createGeometry();
-                    this.createMedias(items, bend, textColor, borderRadius, font);
-                    this.update();
-                    this.addEventListeners();
-                }
-                createRenderer() {
-                    this.renderer = new Renderer({
-                        alpha: true,
-                        antialias: true,
-                        dpr: Math.min(window.devicePixelRatio || 1, 2)
-                    });
-                    this.gl = this.renderer.gl;
-                    this.gl.clearColor(0, 0, 0, 0);
-                    this.container.appendChild(this.gl.canvas);
-                }
-                createCamera() {
-                    this.camera = new Camera(this.gl);
-                    this.camera.fov = 45;
-                    this.camera.position.z = 20;
-                }
-                createScene() {
-                    this.scene = new Transform();
-                }
-                createGeometry() {
-                    this.planeGeometry = new Plane(this.gl, {
-                        heightSegments: 50,
-                        widthSegments: 100
-                    });
-                }
-                createMedias(items, bend = 1, textColor, borderRadius, font) {
-                    const defaultItems = [
-                        { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' },
-                        { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup' },
-                        { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: 'Waterfall' },
-                        { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: 'Strawberries' },
-                        { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: 'Deep Diving' },
-                        { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: 'Train Track' },
-                        { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: 'Santorini' },
-                        { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: 'Blurry Lights' },
-                        { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: 'New York' },
-                        { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: 'Good Boy' },
-                        { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: 'Coastline' },
-                        { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: 'Palm Trees' }
-                    ];
-                    const galleryItems = items && items.length ? items : defaultItems;
-                    this.mediasImages = galleryItems.concat(galleryItems);
-                    this.medias = this.mediasImages.map((data, index) => {
-                        return new Media({
-                            geometry: this.planeGeometry,
-                            gl: this.gl,
-                            image: data.image,
-                            index,
-                            length: this.mediasImages.length,
-                            renderer: this.renderer,
-                            scene: this.scene,
-                            screen: this.screen,
-                            text: data.text,
-                            viewport: this.viewport,
-                            bend,
-                            textColor,
-                            borderRadius,
-                            font
-                        });
-                    });
-                }
-                onTouchDown(e) {
-                    this.isDown = true;
-                    this.scroll.position = this.scroll.current;
-                    this.start = e.touches ? e.touches[0].clientX : e.clientX;
-                }
-                onTouchMove(e) {
-                    if (!this.isDown) return;
-                    const x = e.touches ? e.touches[0].clientX : e.clientX;
-                    const distance = (this.start - x) * (this.scrollSpeed * 0.025);
-                    this.scroll.target = this.scroll.position + distance;
-                }
-                onTouchUp() {
-                    this.isDown = false;
-                    this.onCheck();
-                }
-                onWheel(e) {
-                    const delta = e.deltaY || e.wheelDelta || e.detail;
-                    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
-                    this.onCheckDebounce();
-                }
-                onCheck() {
-                    if (!this.medias || !this.medias[0]) return;
-                    const width = this.medias[0].width;
-                    const itemIndex = Math.round(Math.abs(this.scroll.target) / width);
-                    const item = width * itemIndex;
-                    this.scroll.target = this.scroll.target < 0 ? -item : item;
-                }
-                onResize() {
-                    this.screen = {
-                        width: this.container.clientWidth,
-                        height: this.container.clientHeight
-                    };
-                    this.renderer.setSize(this.screen.width, this.screen.height);
-                    this.camera.perspective({
-                        aspect: this.screen.width / this.screen.height
-                    });
-                    const fov = (this.camera.fov * Math.PI) / 180;
-                    const height = 2 * Math.tan(fov / 2) * this.camera.position.z;
-                    const width = height * this.camera.aspect;
-                    this.viewport = { width, height };
-                    if (this.medias) {
-                        this.medias.forEach(media => media.onResize({ screen: this.screen, viewport: this.viewport }));
-                    }
-                }
-                update() {
-                    this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
-                    const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
-                    if (this.medias) {
-                        this.medias.forEach(media => media.update(this.scroll, direction));
-                    }
-                    this.renderer.render({ scene: this.scene, camera: this.camera });
-                    this.scroll.last = this.scroll.current;
-                    this.raf = window.requestAnimationFrame(this.update.bind(this));
-                }
-                addEventListeners() {
-                    this.boundOnResize = this.onResize.bind(this);
-                    this.boundOnWheel = this.onWheel.bind(this);
-                    this.boundOnTouchDown = this.onTouchDown.bind(this);
-                    this.boundOnTouchMove = this.onTouchMove.bind(this);
-                    this.boundOnTouchUp = this.onTouchUp.bind(this);
-                    window.addEventListener('resize', this.boundOnResize);
-                    window.addEventListener('mousewheel', this.boundOnWheel);
-                    window.addEventListener('wheel', this.boundOnWheel);
-                    window.addEventListener('mousedown', this.boundOnTouchDown);
-                    window.addEventListener('mousemove', this.boundOnTouchMove);
-                    window.addEventListener('mouseup', this.boundOnTouchUp);
-                    window.addEventListener('touchstart', this.boundOnTouchDown);
-                    window.addEventListener('touchmove', this.boundOnTouchMove);
-                    window.addEventListener('touchend', this.boundOnTouchUp);
-                }
-                destroy() {
-                    window.cancelAnimationFrame(this.raf);
-                    window.removeEventListener('resize', this.boundOnResize);
-                    window.removeEventListener('mousewheel', this.boundOnWheel);
-                    window.removeEventListener('wheel', this.boundOnWheel);
-                    window.removeEventListener('mousedown', this.boundOnTouchDown);
-                    window.removeEventListener('mousemove', this.boundOnTouchMove);
-                    window.removeEventListener('mouseup', this.boundOnTouchUp);
-                    window.removeEventListener('touchstart', this.boundOnTouchDown);
-                    window.removeEventListener('touchmove', this.boundOnTouchMove);
-                    window.removeEventListener('touchend', this.boundOnTouchUp);
-                    if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
-                        this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
-                    }
-                }
-            }
-
-            // Initialize the certificates gallery
-            // Use bend = 0 for horizontal sliding (no curve)
-            // Increase scrollSpeed for faster response
-            try {
-                const certificatesApp = new App(certificatesGallery, {
-                    items: certificateItems,
-                    bend: 0, // Horizontal flat scrolling
-                    textColor: '#1a3a5f', // Match the theme color
-                    borderRadius: 0.05,
-                    font: 'bold 24px Inter',
-                    scrollSpeed: 3, // Faster scrolling
-                    scrollEase: 0.08 // Smoother easing
-                });
-
-                // Store reference for cleanup if needed
-                window.certificatesApp = certificatesApp;
-
-                // Hide placeholder once OGL gallery is initialized
-                if (placeholder) placeholder.style.display = 'none';
-
-                console.log('Certificates gallery initialized');
-            } catch (error) {
-                console.error('Failed to initialize certificates gallery:', error);
-                console.error('Error details:', {
-                    message: error.message,
-                    stack: error.stack,
-                    OGL: window.OGL,
-                    certificateItems: certificateItems
-                });
-                // Keep placeholder visible on error
-            }
-        });
-
-        // Circular Gallery JavaScript
-        document.addEventListener('DOMContentLoaded', function() {
-            const gallery = document.getElementById('circularGallery');
-            if (!gallery) return;
-
-            // Certificate images data - using certificates from media/certificates folder
-            const certificateItems = [
-                { image: 'media/certificates/cert1.JPG', title: '大广赛省二' },
-                { image: 'media/certificates/cert2.png', title: '19届好创意国二' },
-                { image: 'media/certificates/cert3.png', title: '19届好创意国三' },
-                { image: 'media/certificates/cert4.png', title: '20届好创意国优' },
-                { image: 'media/certificates/cert5.png', title: '13届ncda国二' },
-                { image: 'media/certificates/cert6.png', title: '2025米兰省二' },
-                { image: 'media/certificates/cert7.png', title: '2025米兰省三' },
-                { image: 'media/certificates/cert8.png', title: '2025米兰省三 }' },
-                { image: 'media/certificates/省三 1作3.png', title: '2025米兰省三）' },
-                { image: 'media/certificates/省二 一作 6.png', title: '2025米兰省二）' },
-                { image: 'media/certificates/省二 二作3.png', title: '2025米兰省二）' }
-            ];
-
-            // Initialize gallery
-            initCircularGallery(gallery, certificateItems);
-        });
-
-        function initCircularGallery(container, items) {
-            // Clear container
-            container.innerHTML = '';
-
-            // Add center indicator
-            const centerEl = document.createElement('div');
-            centerEl.className = 'gallery-center';
-            container.appendChild(centerEl);
-
-            // Create gallery items
-            items.forEach((item, index) => {
-                const itemEl = document.createElement('div');
-                itemEl.className = 'gallery-item';
-                itemEl.dataset.index = index;
-
-                const innerEl = document.createElement('div');
-                innerEl.className = 'gallery-item-inner';
-
-                const imgEl = document.createElement('img');
-                imgEl.src = item.image;
-                imgEl.alt = item.title;
-                imgEl.loading = 'lazy';
-
-                const titleEl = document.createElement('div');
-                titleEl.className = 'gallery-item-title';
-                titleEl.textContent = item.title;
-
-                innerEl.appendChild(imgEl);
-                innerEl.appendChild(titleEl);
-                itemEl.appendChild(innerEl);
-                container.appendChild(itemEl);
-
-                // Click to view larger
-                itemEl.addEventListener('click', () => {
-                    openCertificateModal(item.image, item.title);
-                });
-            });
-
-            // Gallery state
-            const state = {
-                rotation: 0,
-                isDragging: false,
-                startX: 0,
-                startRotation: 0,
-                autoRotate: true,
-                rotateSpeed: 0.2,
-                radius: 300,
-                totalItems: items.length
-            };
-
-            // Update positions
-            function updatePositions() {
-                const items = container.querySelectorAll('.gallery-item');
-                const angleStep = 360 / state.totalItems;
-
-                items.forEach((item, index) => {
-                    const angle = (index * angleStep + state.rotation) * Math.PI / 180;
-                    const x = Math.cos(angle) * state.radius;
-                    const z = Math.sin(angle) * state.radius;
-
-                    // Calculate face angle (items should face center)
-                    const faceAngle = Math.atan2(z, x) * (180 / Math.PI) - 90;
-
-                    item.style.transform = `
-                        translate(-50%, -50%)
-                        translate3d(${x}px, 0, ${z}px)
-                        rotateY(${faceAngle}deg)
-                    `;
-
-                    // Scale based on distance from front
-                    const scale = 0.8 + (Math.cos(angle) + 1) * 0.1;
-                    item.style.opacity = 0.6 + (Math.cos(angle) + 1) * 0.2;
-                    item.querySelector('.gallery-item-inner').style.transform = `scale(${scale})`;
-                });
-            }
-
-            // Auto rotation
-            let animationId = null;
-            function autoRotate() {
-                if (!state.autoRotate) return;
-                state.rotation += state.rotateSpeed;
-                updatePositions();
-                animationId = requestAnimationFrame(autoRotate);
-            }
-
-            // Start auto rotation
-            function startAutoRotate() {
-                if (animationId) cancelAnimationFrame(animationId);
-                animationId = requestAnimationFrame(autoRotate);
-            }
-
-            // Stop auto rotation
-            function stopAutoRotate() {
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
-                    animationId = null;
-                }
-            }
-
-            // Mouse/touch interaction
-            function onDragStart(e) {
-                state.isDragging = true;
-                state.startX = e.clientX || e.touches[0].clientX;
-                state.startRotation = state.rotation;
-                stopAutoRotate();
-            }
-
-            function onDragMove(e) {
-                if (!state.isDragging) return;
-                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-                if (!clientX) return;
-
-                const deltaX = clientX - state.startX;
-                state.rotation = state.startRotation + deltaX * 0.5;
-                updatePositions();
-            }
-
-            function onDragEnd() {
-                state.isDragging = false;
-                if (state.autoRotate) {
-                    startAutoRotate();
-                }
-            }
-
-            // Wheel interaction
-            function onWheel(e) {
-                e.preventDefault();
-                state.rotation += e.deltaY * 0.1;
-                updatePositions();
-            }
-
-            // Set up event listeners
-            container.addEventListener('mousedown', onDragStart);
-            container.addEventListener('touchstart', onDragStart, { passive: true });
-
-            window.addEventListener('mousemove', onDragMove);
-            window.addEventListener('touchmove', onDragMove, { passive: true });
-
-            window.addEventListener('mouseup', onDragEnd);
-            window.addEventListener('touchend', onDragEnd);
-
-            container.addEventListener('wheel', onWheel, { passive: false });
-
-            // Control buttons
-            const autoRotateBtn = document.getElementById('autoRotateBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const speedSlider = document.getElementById('speedSlider');
-
-            if (autoRotateBtn) {
-                autoRotateBtn.addEventListener('click', () => {
-                    state.autoRotate = !state.autoRotate;
-                    autoRotateBtn.textContent = state.autoRotate ? '停止旋转' : '自动旋转';
-
-                    if (state.autoRotate) {
-                        startAutoRotate();
-                    } else {
-                        stopAutoRotate();
-                    }
-                });
-            }
-
-            if (resetBtn) {
-                resetBtn.addEventListener('click', () => {
-                    state.rotation = 0;
-                    updatePositions();
-                });
-            }
-
-            if (speedSlider) {
-                speedSlider.addEventListener('input', (e) => {
-                    state.rotateSpeed = e.target.value * 0.05;
-                });
-            }
-
-            // Initialize
-            updatePositions();
-            startAutoRotate();
-
-            // Modal for larger view
-            function openCertificateModal(imageSrc, title) {
-                // Create modal if doesn't exist
-                let modal = document.getElementById('certificateModal');
-                if (!modal) {
-                    modal = document.createElement('div');
-                    modal.id = 'certificateModal';
-                    modal.className = 'modal';
-                    modal.innerHTML = `
-                        <div class="modal-overlay"></div>
-                        <div class="modal-content" style="max-width: 600px;">
-                            <button class="modal-close">&times;</button>
-                            <div class="modal-body">
-                                <h3 class="modal-project-title">${title}</h3>
-                                <div class="modal-project-image">
-                                    <img src="${imageSrc}" alt="${title}" style="max-height: 70vh;">
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    document.body.appendChild(modal);
-
-                    // Close button
-                    const closeBtn = modal.querySelector('.modal-close');
-                    closeBtn.addEventListener('click', () => {
-                        modal.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-
-                    // Click overlay to close
-                    modal.querySelector('.modal-overlay').addEventListener('click', () => {
-                        modal.classList.remove('active');
-                        document.body.style.overflow = '';
-                    });
-                } else {
-                    // Update existing modal
-                    modal.querySelector('img').src = imageSrc;
-                    modal.querySelector('img').alt = title;
-                    modal.querySelector('.modal-project-title').textContent = title;
-                }
-
-                // Show modal
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+</div><!-- .container -->
+
+
+<!-- ======================================================
+     PROJECT MODAL — Win2k Dialog
+     ====================================================== -->
+<div class="win-modal-overlay" id="projectModal">
+    <div class="win-dialog" id="projectDialog">
+        <div style="background:linear-gradient(to right,#0a246a,#1641c6);color:#fff;padding:3px 4px;font-size:11px;font-weight:bold;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:4px;" id="modalDialogTitle">
+                <svg width="14" height="14" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="#ffd700" stroke="#c0a000" stroke-width="1"/></svg>
+                项目详情
+            </div>
+            <div style="display:flex;gap:2px;">
+                <button class="win-chrome-btn" onclick="closeProjectModal()">✕</button>
+            </div>
+        </div>
+        <div class="win-dialog-body" id="modalBody">
+            <!-- content injected by JS -->
+        </div>
+        <div class="win-dialog-footer">
+            <button class="win-btn win-btn-default" onclick="closeProjectModal()">确定 (OK)</button>
+            <button class="win-btn" onclick="closeProjectModal()">关闭</button>
+        </div>
+    </div>
+</div>
+
+<!-- Certificate Modal -->
+<div class="win-modal-overlay" id="certModal">
+    <div class="win-dialog" style="max-width:600px;">
+        <div style="background:linear-gradient(to right,#0a246a,#1641c6);color:#fff;padding:3px 4px;font-size:11px;font-weight:bold;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+            <span>查看证书</span>
+            <button class="win-chrome-btn" onclick="closeCertModal()">✕</button>
+        </div>
+        <div style="padding:8px;background:#d4d0c8;text-align:center;">
+            <img id="certModalImg" src="" alt="证书" style="max-width:100%;max-height:70vh;border:2px solid #808080;">
+        </div>
+        <div class="win-dialog-footer">
+            <button class="win-btn win-btn-default" onclick="closeCertModal()">关闭</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+// ============================================================
+// CLOCK
+// ============================================================
+function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('win-clock').textContent = h + ':' + m;
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+// ============================================================
+// START MENU
+// ============================================================
+function toggleStartMenu() {
+    const m = document.getElementById('start-menu');
+    m.style.display = m.style.display === 'none' ? 'block' : 'none';
+}
+function closeStart() {
+    document.getElementById('start-menu').style.display = 'none';
+}
+document.addEventListener('click', function(e) {
+    const btn = document.getElementById('win-start-btn');
+    const menu = document.getElementById('start-menu');
+    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+    }
+});
+
+// ============================================================
+// SCROLL TO TOP
+// ============================================================
+function scrollToTop(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// ABOUT TABS
+// ============================================================
+function switchAboutTab(n) {
+    for (let i = 1; i <= 3; i++) {
+        document.getElementById('about-tab-' + i).classList.remove('active');
+        document.getElementById('about-tabs').children[i-1].classList.remove('active');
+    }
+    document.getElementById('about-tab-' + n).classList.add('active');
+    document.getElementById('about-tabs').children[n-1].classList.add('active');
+}
+
+// ============================================================
+// PROJECT FILTER
+// ============================================================
+function filterProjects(cat) {
+    const cards = document.querySelectorAll('.project-win-card');
+    cards.forEach(c => {
+        if (cat === 'all' || c.dataset.category === cat) {
+            c.style.display = '';
+        } else {
+            c.style.display = 'none';
         }
-    </script>
+    });
+}
 
-    <script>
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Lucide icons
-            if (window.lucide) {
-                lucide.createIcons();
-            }
+// ============================================================
+// PROJECT DATA
+// ============================================================
+const projectData = {
+    'project-1': {
+        title: '毕设纪录片《一脉火龙》',
+        image: 'Projects/project-1-documentary.JPG',
+        stats: null,
+        body: `
+            <h3>项目简介</h3>
+            <img src="Projects/project-1-documentary.JPG" alt="一脉火龙">
+            <p>非遗传承挖掘、剧本与拍摄策划。这是一个关于非物质文化遗产传承的纪录片项目，深入挖掘火龙文化的起源与发展。</p>
+            <p>通过实地调研和人物访谈，展现了非遗传承中个人与群体的矛盾及故事。项目将独立完成从前期策划到后期制作的全流程。</p>
+            <h3>项目亮点</h3>
+            <p>• 独立策划并主导全程拍摄制作<br>• 深入记录非遗传承人的生活与坚守<br>• 结合现代影像语言传递传统文化价值</p>
+        `
+    },
+    'project-2': {
+        title: 'AI 动画短片《月光光》',
+        image: 'Projects/project-2-ai-animation.jpg',
+        stats: [['获奖', '全国即梦AI大赛优秀奖'], ['技术', 'AIGC / SD / MJ'], ['时长', '3分钟']],
+        body: `
+            <h3>项目简介</h3>
+            <img src="Projects/project-2-ai-animation.jpg" alt="月光光">
+            <p>使用AI生成技术创作的动画短片，融合了客家童谣与传统美学。探索了Stable Diffusion、Midjourney等AI工具在动画制作中的应用，实现了从文本到视觉的创造性转换。</p>
+            <p>作品在<strong>全国即梦AI大赛</strong>中获优秀奖。</p>
+            <h3>技术亮点</h3>
+            <p>• 全程使用AI工具辅助视觉创作<br>• 将客家文化元素与现代AI技术融合<br>• 探索AIGC在短片叙事中的创新应用</p>
+            <p><a href="https://jimeng.jianying.com/ai-tool/work-detail/7610810411935370546" target="_blank" class="win-link">点击查看作品 →</a></p>
+        `
+    },
+    'project-3': {
+        title: '剧情短片《宿舍受骗记》',
+        image: 'Projects/project-3-dorm-scam.jpg',
+        stats: [['获奖', '中国好创意河马杯最佳导演奖'], ['类型', '防诈骗微短剧'], ['形式', '校园剧情片']],
+        body: `
+            <h3>项目简介</h3>
+            <img src="Projects/project-3-dorm-scam.jpg" alt="宿舍受骗记">
+            <p>一部关注大学生防诈骗的剧情短片，通过AI获取灵感，以幽默讽刺的手法揭示校园诈骗的常见手段。</p>
+            <p>该作品获得<strong>中国好创意河马杯最佳导演奖</strong>，在校园内引起广泛讨论。</p>
+            <h3>创作理念</h3>
+            <p>• 用真实案例改编，贴近学生生活<br>• 幽默轻松的叙事风格，寓教于乐<br>• 获最佳导演奖，受到评委高度认可</p>
+            <p><a href="https://www.xinpianchang.com/a13394272" target="_blank" class="win-link">点击查看作品 →</a></p>
+        `
+    },
+    'project-4': {
+        title: '市级媒体内容创作',
+        image: 'Projects/project-4-tesla-fleet.JPG',
+        stats: [['阅读量', '20w+ 单篇最高'], ['粉丝', '5k+ 个人账号'], ['合作', '多家品牌']],
+        body: `
+            <h3>项目简介</h3>
+            <img src="Projects/project-4-tesla-fleet.JPG" alt="市级媒体内容创作">
+            <p>在阳江日报社担任新媒体记者期间，负责创意内容策划与制作。涵盖新闻报道、深度访谈、视觉叙事等多种形式。</p>
+            <h3>核心成果</h3>
+            <p>• 单篇阅读量最高达 <strong>20万+</strong><br>• 个人账号积累粉丝 <strong>5000+</strong><br>• 主导多次品牌商业合作内容制作<br>• 深度报道多个社会议题，引发广泛转载</p>
+        `
+    },
+    'project-5': {
+        title: '特斯拉大客户深度运营体验',
+        image: 'Projects/project-5-tesla-operation.jpg.jpg',
+        stats: [['月均场次', '20+'], ['预算优化', '-10%'], ['留资提升', '+15%']],
+        body: `
+            <h3>项目复盘</h3>
+            <img src="Projects/project-5-tesla-operation.jpg.jpg" alt="Tesla运营">
+            <h3>数据驱动：试驾方案的精细化与提效</h3>
+            <p><strong>数据复盘与需求拆解：</strong>通过复盘前期活动的参与意向数据，发现"一刀切"的试驾流程导致高净值客户沟通成本过高。</p>
+            <p><strong>实际动作：</strong>基于数据反馈，将试驾会流程进行分层设计，针对不同员工的差异化偏好，预设不同的体验模块。</p>
+            <p><strong>实战产出：</strong>在预算降低 <strong>10%</strong> 的前提下，实现了留资量环比 <strong>15%</strong> 的提升，让单场活动的ROI达到最大化。</p>
+            <h3>资源统筹与跨部门协同</h3>
+            <p>全权负责从场地洽谈、供应商管理到物料采买全流程。高压环境下保持单月策划执行 <strong>20+ 场</strong>活动，向上对接经理汇报，横向调配销售资源，向下管控供应商。</p>
+            <img src="Projects/project-5-tesla-team.jpg" alt="特斯拉团队">
+        `
+    }
+};
 
-            // Download resume button functionality
-            const downloadBtn = document.getElementById('downloadResumeBtn');
-            if (downloadBtn) {
-                downloadBtn.addEventListener('click', function() {
-                    // Create a temporary link element
-                    const link = document.createElement('a');
-                    // Add timestamp to prevent caching
-                    const timestamp = new Date().getTime();
-                    const fileUrl = 'public/resume.pdf?' + timestamp;
-                    link.href = fileUrl;
-                    link.download = 'resume.pdf'; // Suggested filename
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+// ============================================================
+// OPEN / CLOSE PROJECT MODAL
+// ============================================================
+function openProjectModal(id) {
+    const p = projectData[id];
+    if (!p) return;
+    document.getElementById('modalDialogTitle').innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="#ffd700" stroke="#c0a000" stroke-width="1"/></svg>
+        ${p.title}
+    `;
+    let statsHtml = '';
+    if (p.stats) {
+        statsHtml = '<div class="win-stat-grid">' + p.stats.map(([label, val]) => `
+            <div class="win-stat-box">
+                <div class="win-stat-value">${val}</div>
+                <div class="win-stat-label">${label}</div>
+            </div>
+        `).join('') + '</div>';
+    }
+    document.getElementById('modalBody').innerHTML = statsHtml + p.body;
+    document.getElementById('projectModal').classList.add('active');
+}
 
-                    // Optional: trigger a download event tracking
-                    console.log('Resume download initiated at', new Date().toISOString());
-                    console.log('Downloading from:', fileUrl);
+function closeProjectModal() {
+    document.getElementById('projectModal').classList.remove('active');
+}
 
-                    // Also try a direct fetch to check file availability
-                    fetch(fileUrl.split('?')[0], { method: 'HEAD' })
-                        .then(response => {
-                            console.log('File status:', response.status, response.statusText);
-                            if (response.ok) {
-                                console.log('File exists and is accessible');
-                            } else {
-                                console.warn('File may not be accessible:', response.status);
-                            }
-                        })
-                        .catch(err => {
-                            console.error('Error checking file:', err);
-                        });
-                });
-            }
-        });
-    </script>
+// Close modal on overlay click
+document.getElementById('projectModal').addEventListener('click', function(e) {
+    if (e.target === this) closeProjectModal();
+});
+
+// ============================================================
+// CERTIFICATE MODAL
+// ============================================================
+function openCertModal(src) {
+    document.getElementById('certModalImg').src = src;
+    document.getElementById('certModal').classList.add('active');
+}
+function closeCertModal() {
+    document.getElementById('certModal').classList.remove('active');
+}
+document.getElementById('certModal').addEventListener('click', function(e) {
+    if (e.target === this) closeCertModal();
+});
+
+// ============================================================
+// KEYBOARD ESC
+// ============================================================
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeProjectModal();
+        closeCertModal();
+    }
+});
+
+// ============================================================
+// WINDOW RESTORE
+// ============================================================
+// If user accidentally closes the main window
+document.addEventListener('click', function(e) {
+    const w = document.getElementById('main-window');
+    if (w.style.display === 'none') {
+        // restore on any click (simulating re-opening)
+    }
+});
+
+// Taskbar click to show window
+document.querySelector('.taskbar-task-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    const w = document.getElementById('main-window');
+    w.style.display = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Address bar — allow "navigation"
+document.querySelector('.win-address-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        alert('正在导航到: ' + this.value + '\n\n此功能在当前版本中不可用。\n请检查您的 Internet 连接设置。');
+    }
+});
+</script>
+
 </body>
 </html>
